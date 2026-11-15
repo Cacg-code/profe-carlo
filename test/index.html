@@ -6,6 +6,18 @@
 <title>Test de ingreso gratis · Profe Carlo</title>
 <meta name="description" content="Test gratis de matemáticas para toda la secundaria, de 1.º a 5.º. 12 preguntas, 15 minutos, y al final ves qué temas reforzar.">
 <meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_PE">
+<meta property="og:site_name" content="Profe Carlo">
+<meta property="og:url" content="https://cacg-code.github.io/profe-carlo/test/">
+<meta property="og:title" content="Test de matemáticas gratis · Profe Carlo">
+<meta property="og:description" content="12 preguntas de tu grado, 15 minutos. Al final ves qué temas reforzar y en qué te equivocaste.">
+<meta property="og:image" content="https://cacg-code.github.io/profe-carlo/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Profe Carlo, clases de matemáticas en Villa Club, Carabayllo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cacg-code.github.io/profe-carlo/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&display=swap" rel="stylesheet">
@@ -306,9 +318,14 @@ $('go').onclick=()=>{
   if(!$('dist').value) return $('err').textContent='Elige dónde vives.';
   if(ph && !/^9\d{8}$/.test(ph)) return $('err').textContent='El WhatsApp debe tener 9 dígitos y empezar con 9.';
   $('err').textContent='';$('s-start').classList.add('hidden');$('s-quiz').classList.remove('hidden');
+  BANK[grade]=mezclar(BANK[grade]);answers=[];i=0;
   $('dots').innerHTML=BANK[grade].map(()=>'<i></i>').join('');render();
 };
 
+/* En cada intento cambian el orden de las alternativas y cuál de las dos preguntas de cada tema va primero. */
+function barajar(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a}
+function mezclar(Q){const out=[];for(let k=0;k<Q.length;k+=2){const par=Math.random()<.5?[Q[k],Q[k+1]]:[Q[k+1],Q[k]];
+  par.forEach(([t,q,o,c,e])=>{const ord=barajar([0,1,2,3]);out.push([t,q,ord.map(n=>o[n]),ord.indexOf(c),e])})}return out}
 function render(){
   const Q=BANK[grade],[t,q,o]=Q[i];sel=null;$('next').disabled=true;
   document.body.dataset.f=FIELDS[Math.floor(i/2)%FIELDS.length];
