@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Profe Carlo · Clases de matemáticas en Villa Club, Carabayllo</title>
+<meta name="description" content="Clases particulares de matemáticas en todo Villa Club, Carabayllo, Comas y Los Olivos. Secundaria y primeros ciclos de universidad. Haz el test gratis.">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{
+  --bg:#ffffff;--surface:#f1f1f1;--tone:#d6d6d6;--ink:#0a0a0a;--muted:#5c5c5c;
+  --blue:#2436ff;--navy:#050a5c;--mid:#131fae;
+  --step-small:clamp(.8125rem,.79rem + .1vw,.875rem);
+  --step-body:clamp(1.0625rem,1rem + .25vw,1.1875rem);
+  --step-lead:clamp(1.25rem,1.1rem + .7vw,1.625rem);
+  --step-head:clamp(2rem,1.3rem + 3.2vw,4rem);
+  --step-display:clamp(4rem,11.2vw,11rem);
+  --m:clamp(16px,2.3vw,32px);--sp:clamp(72px,9vw,136px);--gap:8px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--step-body)/1.5 "Bricolage Grotesque",system-ui,sans-serif;overflow-x:clip}
+img,svg,canvas{display:block;max-width:100%}
+img{height:auto;filter:grayscale(1) contrast(1.05)}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
+h1,h2{font-weight:600;letter-spacing:-.04em;line-height:.95;text-wrap:balance}
+h2{font-size:var(--step-head)}
+h3{font-size:var(--step-lead);font-weight:600;letter-spacing:-.02em;line-height:1.1}
+h4{font-size:var(--step-body);font-weight:600}
+.lead{font-size:var(--step-lead);line-height:1.3;letter-spacing:-.01em}
+.small{font-size:var(--step-small)}
+.muted{color:var(--muted)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+::selection{background:var(--blue);color:#fff}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 22px;background:var(--ink);color:#fff;font-weight:500;text-decoration:none;transition:background .25s,color .25s,transform .25s var(--ease)}
+.btn:hover{background:var(--blue);transform:translateY(-2px)}
+.btn:active{transform:scale(.97)}
+.btn.w{background:#fff;color:var(--ink)}
+.btn.w:hover{background:var(--ink);color:#fff}
+.ul{font-weight:500;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px;cursor:pointer;transition:text-underline-offset .2s}
+.ul:hover{text-underline-offset:8px}
+
+.sec{padding:var(--sp) var(--m)}
+.ax{display:grid;grid-template-columns:42fr 58fr}
+.ax>.side{padding-right:clamp(24px,5vw,80px)}
+.pick{display:flex;flex-wrap:wrap;gap:var(--gap)}
+.pick button{min-height:48px;padding:10px 18px;background:var(--surface);font-weight:500;transition:background .25s,color .25s,transform .25s var(--ease)}
+.pick button:hover{transform:translateY(-2px)}
+.pick button[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+
+/* figuras que se dibujan solas */
+const PR=n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i==0)return false;return true};
+function fig(cv){const k=cv.dataset.fig,fg=cv.dataset.fg||'#0a0a0a',ac=cv.dataset.ac||'#2436ff',x=cv.getContext('2d');let w=0,h=0,vis=false;const t0=performance.now();
+  const size=()=>{const r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);w=r.width;h=r.height;cv.width=Math.round(w*d);cv.height=Math.round(h*d);x.setTransform(d,0,0,d,0,0)};
+  const L=(pts,c,lw,close,fill)=>{x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));if(close)x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(c){x.strokeStyle=c;x.lineWidth=lw;x.stroke()}};
+  const dot=(a,b,r,c)=>{x.beginPath();x.arc(a,b,r,0,7);x.fillStyle=c;x.fill()};
+  const ez=p=>p<0?0:p>1?1:1-Math.pow(1-p,3);
+  const txt=(s,a,b,px,c)=>{x.font=`600 ${px}px "Bricolage Grotesque",sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillStyle=c;x.fillText(s,a,b)};
+  const D={
+    seno(t,s,lw){const r=Math.min(h*.3,w*.15),cx=r+w*.07,cy=h/2,a=t*1.3,x0=cx+r+w*.06,P=[cx+r*Math.cos(a),cy-r*Math.sin(a)];
+      x.globalAlpha=.25;L([[w*.04,cy],[w*.96,cy]],fg,lw*.6);L([[cx,cy-r*1.25],[cx,cy+r*1.25]],fg,lw*.6);x.globalAlpha=1;
+      x.beginPath();x.arc(cx,cy,r,0,7);x.strokeStyle=fg;x.lineWidth=lw;x.stroke();
+      const pts=[];for(let px=x0;px<w*.96;px+=3)pts.push([px,cy-r*Math.sin(a-(px-x0)/r)]);L(pts,fg,lw);
+      L([[cx,cy],P],ac,lw*1.4);x.setLineDash([5,7]);L([P,[x0,P[1]]],ac,lw*.8);x.setLineDash([]);dot(P[0],P[1],lw*2.6,ac);dot(x0,P[1],lw*2.6,ac)},
+    pitagoras(t,s,lw){const u=s/12.5,ox=w/2-2*u,oy=h/2+1.5*u,p=t%9,q1=ez(p/1.2),q2=ez((p-1.2)/1.2),q3=ez((p-2.4)/1.5),A=[ox+4*u,oy],B=[ox,oy-3*u],O=[ox,oy];
+      x.globalAlpha=1-ez((p-8)/1);
+      L([A,O,[ox,oy+4*u*q1],[ox+4*u,oy+4*u*q1]],fg,lw,true);L([O,B,[ox-3*u*q2,oy-3*u],[ox-3*u*q2,oy]],fg,lw,true);
+      L([A,B,[B[0]+3*u*q3,B[1]-4*u*q3],[A[0]+3*u*q3,A[1]-4*u*q3]],null,0,true,ac);
+      L([A,O,B],fg,lw*1.6,true,'#f1f1f1');
+      if(q1>.9)txt('16',ox+2*u,oy+2*u,u*1.2,fg);if(q2>.9)txt('9',ox-1.5*u,oy-1.5*u,u*1.2,fg);if(q3>.9)txt('25',ox+3.5*u,oy-3.5*u,u*1.5,'#fff');x.globalAlpha=1},
+    poligono(t,s,lw){const R=s*.34,cx=w/2,cy=h/2,st=t/1.8,n=3+Math.floor(st)%8,f=ez((st%1)/.45),rot=t*.25-Math.PI/2;
+      x.globalAlpha=.35;x.beginPath();x.arc(cx,cy,R,0,7);x.strokeStyle=fg;x.lineWidth=lw*.7;x.stroke();x.globalAlpha=1;
+      const pts=[];for(let i=0;i<n;i++){const a=rot+i/n*6.2832*f;pts.push([cx+R*Math.cos(a),cy+R*Math.sin(a)])}
+      L(pts,fg,lw*1.3,true);pts.forEach(p=>dot(p[0],p[1],lw*2.4,ac));txt(n,cx,cy,s*.16,fg)},
+    primos(t,s,lw){const g=s*.8/10,x0=w/2-g*5,y0=h/2-g*5,n=Math.floor(t*9)%135;
+      for(let m=1;m<=100;m++){const c=(m-1)%10,r=Math.floor((m-1)/10),a=x0+c*g,b=y0+r*g;
+        if(m<=n&&PR(m)){const k=ez((n-m)/6);x.fillStyle=ac;x.fillRect(a+g*.5-g*.42*k,b+g*.5-g*.42*k,g*.84*k,g*.84*k);if(g>26)txt(m,a+g/2,b+g/2,g*.36,'#fff')}
+        else{x.globalAlpha=m<=n?.22:.6;dot(a+g/2,b+g/2,g*.09,fg);x.globalAlpha=1}}},
+    lissajous(t,s,lw){const R=s*.36,cx=w/2,cy=h/2,ph=t*.35,pts=[];for(let i=0;i<=360;i++){const a=i/360*6.2832;pts.push([cx+R*Math.sin(3*a+ph),cy+R*Math.sin(2*a)])}
+      L(pts,fg,lw);const a=t*.6;dot(cx+R*Math.sin(3*a+ph),cy+R*Math.sin(2*a),lw*3,ac)},
+    rosa(t,s,lw){const R=s*.42,cx=w/2,cy=h/2,p=ez((t%10)/6),rot=t*.12,pts=[];for(let i=0;i<=300*p;i++){const a=i/300*Math.PI,r=R*Math.cos(5*a);pts.push([cx+r*Math.cos(a+rot),cy+r*Math.sin(a+rot)])}
+      if(pts.length>1){L(pts,ac,lw*1.2);const e=pts[pts.length-1];dot(e[0],e[1],lw*2.2,fg)}},
+    parabola(t,s,lw){const cx=w/2,by=h*.84,sx=s*.36/2.2,sy=h*.66/4.84,X=v=>cx+v*sx,Y=v=>by-v*sy,a=2*Math.sin(t*.7);
+      x.globalAlpha=.3;L([[w*.08,by],[w*.92,by]],fg,lw*.7);L([[cx,h*.1],[cx,h*.92]],fg,lw*.7);for(let i=-2;i<=2;i++)L([[X(i),by-4],[X(i),by+4]],fg,lw*.7);x.globalAlpha=1;
+      const pts=[];for(let v=-2.2;v<=2.2;v+=.05)pts.push([X(v),Y(v*v)]);L(pts,fg,lw*1.2);
+      x.save();x.beginPath();x.rect(0,h*.06,w,by-h*.06);x.clip();L([[X(a-1.1),Y(a*a-2.2*a)],[X(a+1.1),Y(a*a+2.2*a)]],ac,lw*1.2);x.restore();
+      x.setLineDash([4,6]);L([[X(a),Y(a*a)],[X(a),by]],ac,lw*.8);x.setLineDash([]);dot(X(a),Y(a*a),lw*2.6,ac)}
+  };
+  function frame(now){if(!w)size();if(!w)return;x.clearRect(0,0,w,h);x.lineJoin=x.lineCap='round';const s=Math.min(w,h);D[k]((now-t0)/1000,s,Math.max(1.5,s*.008));if(vis&&!still)requestAnimationFrame(frame)}
+  new IntersectionObserver(es=>{const v=es[0].isIntersecting;if(v&&!vis){vis=true;size();requestAnimationFrame(still?()=>frame(t0+3400):frame)}else vis=v}).observe(cv);
+  addEventListener('resize',()=>{size();if(still)frame(t0+3400)});
+}
+$$('canvas.fig').forEach(fig);
+new IntersectionObserver(es=>document.querySelector('.fab').classList.toggle('off',es[0].isIntersecting),{threshold:.25}).observe(document.querySelector('.board'));
+
+/* entradas */
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .8s var(--ease);transition-delay:calc(var(--d,0)*80ms)}
+.js .rv.in{opacity:1;transform:none}
+.rail{position:fixed;top:0;left:0;right:0;z-index:30;background:var(--ink);color:#fff;transform:translateY(-100%);visibility:hidden;transition:transform .45s var(--ease),visibility 0s .45s}
+.rail.on{transform:none;visibility:visible;transition:transform .45s var(--ease)}
+.rail .in{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 var(--m)}
+.rail .in::-webkit-scrollbar{display:none}
+.rail a{flex:none;min-height:48px;display:flex;align-items:center;padding:0 clamp(12px,1.3vw,20px);font-weight:500;font-size:var(--step-small);text-decoration:none;white-space:nowrap;transition:background .3s,color .3s}
+.rail a:hover{background:var(--mid)}
+.rail a.on{background:#fff;color:var(--ink)}
+.rail a.cta{margin-left:auto;background:var(--blue);color:#fff}
+.rail i{position:absolute;left:0;right:0;bottom:-4px;height:4px;background:var(--blue);transform-origin:0 50%;transform:scaleX(var(--p,0))}
+main>section,#empieza{scroll-margin-top:48px}
+main>section+section{border-top:6px solid var(--ink)}
+.pasos{background:var(--surface)}
+.js .stage.rv{transform:scale(.9)}
+.js .stage.rv.in{transform:none}
+.fab{transition:transform .4s var(--ease),opacity .3s}.fab.off{transform:translateY(24px);opacity:0;pointer-events:none}
+.js h2.ws .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
+.js h2.ws .w>span{display:inline-block;transform:translateY(110%);transition:transform .9s var(--ease);transition-delay:calc(var(--i)*80ms)}
+.js h2.ws.in .w>span{transform:none}
+.plan{transition:transform .35s var(--ease)}
+.spine{transition:transform .35s var(--ease),background .3s}
+@media (hover:hover){.spine:hover{transform:translateY(-6px)}.plan:hover{transform:translateY(-4px)}}
+
+/* tablero inicial */
+.board{display:grid;gap:var(--gap);padding:var(--gap);height:100svh;min-height:660px;grid-template-rows:60px 1.15fr 1fr;grid-template-columns:1.12fr .88fr}
+.board>*{min-width:0;min-height:0}
+.top{grid-column:1/-1;display:grid;grid-template-columns:60px 1fr auto;gap:var(--gap)}
+.top .logo{background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600;letter-spacing:-.04em;font-size:var(--step-lead);text-decoration:none}
+.top nav{background:var(--surface);display:flex;align-items:center;gap:clamp(16px,2.4vw,36px);padding-left:calc(50% - 30px)}
+.top nav a{text-decoration:none;font-weight:500;padding:8px 0;transition:color .25s}
+.top nav a:hover{color:var(--blue)}
+.top .btn{min-height:60px;padding:0 28px}
+.t-name{background:var(--surface);display:flex;flex-direction:column;justify-content:flex-end;padding:24px;overflow:hidden}
+.t-name h1{font-size:clamp(3.5rem,min(11.2vw,17svh),11rem);letter-spacing:-.04em;line-height:.9;white-space:nowrap;margin-left:-.04em;overflow:hidden;padding:.06em 0 .1em;flex-shrink:0}
+.t-name h1 span{display:inline-block}
+.js .t-name h1 span{transform:translateY(105%);animation:up .9s var(--ease) forwards;animation-delay:calc(var(--i)*55ms + .15s)}
+.t-name p{margin-top:14px;max-width:30ch}
+.t-3d{background:var(--blue);position:relative;overflow:hidden;color:#fff}
+.t-3d canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+.t-3d canvas:active{cursor:grabbing}
+.t-3d p{position:absolute;left:24px;bottom:20px;right:24px;pointer-events:none}
+.t-3d p a{pointer-events:auto;color:#fff;font-weight:600;text-underline-offset:4px}
+.t-img{position:relative;overflow:hidden;background:var(--tone)}
+.fig{display:block;width:100%;height:100%}
+.t-img canvas,.m-img canvas,.strip canvas{position:absolute;inset:0}
+.t-two{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.t-two>div{padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:20px}
+.t-ink{background:var(--ink);color:#fff}
+.t-navy{background:var(--navy);color:#fff}
+.t-navy .acts{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.js .board .tile{opacity:0;animation:tile .8s var(--ease) forwards;animation-delay:calc(var(--d,0)*90ms)}
+@keyframes up{to{transform:none}}
+@keyframes tile{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes shutter{to{clip-path:inset(0)}}
+@keyframes drift{from{transform:scale(1.12)}to{transform:scale(1)}}
+
+/* zona */
+.zona figure svg{width:100%;max-width:520px}
+.zona figcaption{margin-top:14px;color:var(--muted);max-width:44ch}
+.zona .draw{fill:none;stroke:var(--ink);stroke-width:2.5;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s var(--ease);transition-delay:calc(var(--i)*.28s)}
+.zona .in .draw{stroke-dashoffset:0}
+.zona .dot{transform-box:fill-box;transform-origin:center;transform:scale(.4);opacity:0;transition:transform .5s,opacity .4s var(--ease);transition-delay:calc(var(--i)*.28s + .7s)}
+.zona .in .dot{transform:scale(1);opacity:1}
+.zona .lbl{font:500 18px "Bricolage Grotesque",sans-serif;paint-order:stroke;stroke:#fff;stroke-width:7px;stroke-linejoin:round;opacity:0;transition:opacity .5s;transition-delay:calc(var(--i)*.28s + .9s)}
+.zona .in .lbl{opacity:1}
+.zona .arm{transform-origin:200px 200px;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.zona h2{max-width:11ch}
+.zona .lead{margin-top:28px;max-width:34ch}
+.zona dl{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:36px 48px}
+.zona dt{font-size:var(--step-lead);font-weight:600;letter-spacing:-.02em;margin-bottom:8px}
+.zona dd{max-width:36ch}
+
+/* temas */
+.temas{padding-top:0}
+.temas .ax{margin-bottom:48px}
+
+.temas .intro{max-width:52ch;align-self:end}
+.spines{display:flex;gap:var(--gap);align-items:stretch;min-height:540px}
+.spine{flex:0 0 clamp(84px,8vw,124px);color:#fff;padding:24px 16px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;text-align:left;transition:background .35s,transform .35s var(--ease)}
+.spine:nth-of-type(3n+1){background:var(--navy)}.spine:nth-of-type(3n+2){background:var(--blue)}.spine:nth-of-type(3n){background:var(--mid)}
+.spine b{font-size:var(--step-head);font-weight:600;letter-spacing:-.04em;line-height:1}
+.spine span{font-size:var(--step-small);font-weight:500}
+.spine:hover{transform:translateY(-6px)}
+.spine[aria-pressed="true"]{background:var(--ink);transform:none}
+.panel{flex:1 1 0;min-width:0;background:var(--surface);padding:clamp(20px,2.6vw,40px)}
+.panel .cat{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.panel .cat h3{font-size:var(--step-head);letter-spacing:-.04em;line-height:1}
+.panel #tnote{margin-top:14px;max-width:56ch}
+.items{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:28px 40px}
+.item{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start;animation:tile .6s var(--ease) both;animation-delay:calc(var(--i)*70ms)}
+.item .gl{width:56px;height:56px;display:grid;place-items:center;background:var(--ink);color:#fff;font-weight:600;font-size:1.5rem;transition:background .3s,transform .4s var(--ease)}
+.item:hover .gl{background:var(--blue);transform:rotate(-8deg) scale(1.06)}
+.item p{margin-top:4px}
+
+/* sólido */
+.solido{background:var(--surface);display:grid;grid-template-columns:1fr 1fr;min-height:88svh;padding:0}
+.stage{position:relative;margin:40px;aspect-ratio:1;align-self:center;background:#fff;overflow:hidden}
+.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.stage.live img{display:none}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:pan-y;cursor:grab}
+.stage canvas:active{cursor:grabbing}
+.solido .txt{display:flex;flex-direction:column;justify-content:space-between;gap:40px;padding:40px var(--m) 40px 0}
+.tabsx{display:flex;flex-wrap:wrap;gap:6px 26px}
+.tabsx button{font-size:var(--step-body);font-weight:500;color:var(--muted);min-height:44px;text-decoration:underline;text-decoration-color:transparent;text-decoration-thickness:2px;text-underline-offset:6px;transition:color .25s,text-decoration-color .25s}
+.tabsx button[aria-pressed="true"]{color:var(--ink);text-decoration-color:var(--ink)}
+.solido .lead{margin-top:24px;max-width:38ch}
+.stage .hint{position:absolute;left:16px;bottom:12px;color:var(--muted);pointer-events:none}
+.parts{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto auto;gap:clamp(4px,1vw,12px);align-items:stretch}
+.parts button,.parts .two{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:clamp(10px,1.4vw,18px);background:#fff;text-align:left;min-width:0;transition:background .3s,color .3s,transform .3s var(--ease)}
+.parts button:hover{transform:translateY(-4px)}
+.parts button[aria-pressed="true"]{background:var(--blue);color:#fff}
+.parts b{font-size:var(--step-head);font-weight:600;letter-spacing:-.04em;line-height:1;display:inline-block}
+.parts b.tick{animation:tick .5s var(--ease)}
+.parts span{font-weight:600}
+.parts small{font-size:var(--step-small);color:var(--muted);transition:color .3s}
+.parts button[aria-pressed="true"] small{color:#fff}
+.parts i{font-style:normal;font-weight:600;font-size:var(--step-lead);align-self:center}
+.parts .two{background:var(--ink);color:#fff}
+.euler-k{margin-top:16px;max-width:52ch}
+.euler-k+.euler-k{color:var(--muted)}
+#ek{font-weight:600}
+@media (max-width:560px){
+  .parts{grid-template-columns:1fr auto 1fr auto 1fr;gap:4px}
+  .parts button{padding:10px 8px}
+  .parts span{font-size:.9375rem}
+  .parts i:nth-of-type(3){display:none}
+  .parts .two{grid-column:1/-1;flex-direction:row;align-items:baseline;gap:10px;padding:12px}
+  .parts .two b::before{content:"= "}
+}
+@keyframes tick{from{transform:translateY(-40%);opacity:0}to{transform:none;opacity:1}}
+.cells{display:grid;grid-template-columns:1fr 1fr}
+.cells a{min-height:72px;display:flex;align-items:center;padding:0 24px;font-weight:500;text-decoration:none;transition:background .25s,color .25s}
+.cells a:first-child{background:var(--ink);color:#fff}
+.cells a:last-child{background:var(--tone)}
+.cells a:hover{background:var(--blue);color:#fff}
+
+/* ejercicios (mosaico) */
+.mosaic{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:minmax(96px,auto);gap:var(--gap)}
+.mosaic>*{padding:24px;min-width:0}
+.m-head{grid-column:span 6;grid-row:span 3;background:var(--surface);display:flex;flex-direction:column;gap:20px}
+.m-head .pick{margin-top:auto}
+.m-head .pick button{background:#fff}
+.m-head .pick button[aria-pressed="true"]{background:var(--ink)}
+.m-prob{grid-column:span 6;grid-row:span 3;background:var(--blue);color:#fff}
+.m-prob p{font-size:clamp(1.5rem,1.1rem + 1.3vw,2rem);line-height:1.2;letter-spacing:-.02em;max-width:24ch}
+.m-steps{grid-column:span 6;grid-row:span 3;background:var(--surface)}
+.m-steps h3{margin-bottom:18px}
+.m-steps ol{counter-reset:s}
+.m-steps li{font-size:var(--step-lead);line-height:1.3;padding:7px 0;display:grid;grid-template-columns:1.6em 1fr}
+.m-steps li::before{content:counter(s);counter-increment:s;font-weight:600;color:var(--blue)}
+.m-ans{grid-column:span 3;grid-row:span 3;background:var(--ink);color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.m-ans b{font-size:clamp(3.4rem,6vw,6rem);font-weight:600;letter-spacing:-.05em;line-height:.9}
+.m-img{grid-column:span 3;grid-row:span 3;padding:0!important;overflow:hidden;position:relative;background:var(--surface)}
+.m-img img{width:100%;height:100%;object-fit:cover}
+.play li{animation:step .55s var(--ease) both;animation-delay:calc(var(--i)*.55s + .2s)}
+b.play{display:inline-block;animation:pop .6s var(--ease) both;animation-delay:2s}
+@keyframes step{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+
+/* pasos */
+.pasos .hd{display:grid;grid-template-columns:42fr 58fr;margin-bottom:56px}
+.pasos .hd h2{max-width:9ch}
+.pasos .hd p{max-width:44ch;align-self:end}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,48px)}
+.flow svg{width:100%;aspect-ratio:1;background:#fff}
+.flow rect{transform-box:fill-box;transform-origin:center;transition:transform 1s var(--ease),opacity .6s;transition-delay:calc(var(--i)*14ms)}
+.js .flow .paso:not(.in) rect{transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(.2);opacity:0}
+.flow h3{margin-top:20px}
+.flow p{margin-top:8px;max-width:30ch}
+
+/* precios */
+.precios{padding-top:0}
+.pt{display:grid;grid-template-columns:minmax(0,3.2fr) repeat(4,minmax(0,2.2fr));grid-template-rows:repeat(6,auto)}
+.pt>*{display:grid;grid-template-rows:subgrid;grid-row:span 6}
+.pt .c{padding:20px;min-width:0}
+.pt .c:nth-child(even){background:var(--surface)}
+.pt .lab .c{font-size:var(--step-lead);letter-spacing:-.01em}
+.pt .lab .c:first-child{padding-left:0}
+.pt .lab h2{max-width:8ch}
+.pt .plan .c:first-child{display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.pt h3{font-size:clamp(1.5rem,2.3vw,2.25rem);letter-spacing:-.03em;line-height:1}
+.pt .price{font-size:clamp(1.5rem,2.3vw,2.25rem);letter-spacing:-.03em;line-height:1.1}
+.pt .price small{font-size:var(--step-small);letter-spacing:0;display:block;margin-top:4px}
+.pt .k{display:none}
+.pt .rec .c,.pt .rec .c:nth-child(even){background:var(--blue);color:#fff}
+.pt .btn{width:100%;padding:12px 10px;text-align:center}
+.pt .rec .btn{background:#fff;color:var(--ink)}
+.pt .rec .btn:hover{background:var(--ink);color:#fff}
+.yape{margin-top:28px;display:grid;grid-template-columns:42fr 58fr}
+.yape p{grid-column:2;max-width:52ch}
+
+/* sobre */
+.sobre{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.sobre .facts{grid-column:span 2;grid-row:1;display:grid;gap:22px;align-content:start}
+.sobre .facts b{display:block;font-weight:600}
+.sobre .bio{grid-column:3/-1;grid-row:1;font-size:clamp(1.375rem,2.3vw,2.25rem);line-height:1.22;letter-spacing:-.02em}
+.sobre .bio canvas{float:left;width:3.66em;height:3.66em;margin:.1em .5em 0 0;background:var(--surface)}
+.sobre .bio h2{display:inline;font-size:inherit;font-weight:600;letter-spacing:inherit;line-height:inherit}
+.sobre .bio p{display:inline}
+.sobre .bio .p2{display:block;margin-top:1.2em;color:var(--muted);font-size:var(--step-lead);max-width:52ch}
+
+/* preguntas */
+.faq{background:var(--surface)}
+.faq .cols{display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
+.faq .cols p{break-inside:avoid;margin-bottom:22px;max-width:44ch}
+.faq .cols b{font-weight:600}
+.faq figure{margin-top:36px;max-width:340px}
+.faq figure canvas{aspect-ratio:1;height:auto;background:#fff}
+.faq figcaption{margin-top:10px;color:var(--muted)}
+
+/* cierre */
+.strip{display:grid;grid-template-columns:repeat(3,1fr)}
+.strip>div{position:relative;height:40svh;min-height:240px}
+.strip .sa{background:var(--ink)}.strip .sb{background:var(--tone)}.strip .sc{background:var(--navy)}
+.band{background:var(--blue);color:#fff;padding:clamp(40px,5vw,72px) var(--m);min-height:40svh;display:grid;grid-template-columns:7fr 5fr;gap:24px}
+.band h2{max-width:15ch}
+.band h2 a{text-decoration:underline;text-decoration-thickness:4px;text-underline-offset:6px;transition:text-underline-offset .25s}
+.band h2 a:hover{text-underline-offset:12px}
+.band .sub{margin-top:32px;max-width:44ch}
+.band img{width:150px;aspect-ratio:4/5;object-fit:cover;justify-self:end;align-self:end}
+
+footer{background:var(--ink);color:#fff;padding:40px var(--m) 20px}
+footer .cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:32px 24px}
+footer li{padding:3px 0;color:#c9c9c9}
+footer li:first-child{color:#fff;font-weight:500}
+footer a{text-decoration:none}
+footer a:hover{text-decoration:underline;text-underline-offset:4px}
+footer .word{margin-top:clamp(56px,9vw,130px);width:100%;height:auto}
+footer .word text{font:600 172px "Bricolage Grotesque",sans-serif;letter-spacing:-.05em;fill:#fff}
+footer .credits{margin-top:20px;color:#c9c9c9;max-width:90ch}
+footer .legal{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;color:#c9c9c9;padding-right:64px}
+
+.fab{position:fixed;right:16px;bottom:16px;width:56px;height:56px;background:var(--ink);color:#fff;display:grid;place-items:center;z-index:20;transition:background .25s,transform .25s var(--ease)}
+.fab:hover{background:var(--blue);transform:translateY(-3px)}
+.fab svg{width:28px;height:28px}
+
+/* tablet y celular */
+@media (max-width:980px){
+  .ax,.pasos .hd,.yape{grid-template-columns:1fr}
+  .ax>.side{padding-right:0;margin-bottom:36px}
+  .pasos .hd{gap:20px}
+  .yape p{grid-column:1}
+  .flow{grid-template-columns:1fr 1fr}
+  .pt{display:block}
+  .pt>*{display:block}
+  .pt .lab .c:not(:first-child){display:none}
+  .pt .lab .c:first-child{padding:0 0 28px}
+  .pt .plan{margin-bottom:40px;background:var(--surface)}
+  .pt .plan .c,.pt .plan .c:nth-child(even){background:none;padding:12px 20px}
+  .pt .plan .c:first-child{padding-top:24px;flex-direction:row;justify-content:space-between;align-items:baseline;flex-wrap:wrap}
+  .pt .plan .c:last-child{padding-bottom:24px}
+  .pt .rec{background:var(--blue)}
+  .pt .k{display:block;color:var(--muted);font-size:var(--step-small)}
+  .pt .rec .k{color:#fff}
+  .pt h3,.pt .price{font-size:clamp(1.75rem,8vw,2.4rem)}
+  .mosaic{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto}
+  .m-head,.m-prob,.m-steps{grid-column:span 2;grid-row:auto}
+  .m-ans,.m-img{grid-column:span 1;grid-row:auto;aspect-ratio:1}
+  .sobre{display:block}
+  .sobre .facts{grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+  .sobre .bio canvas{width:4.9em;height:4.9em}
+  .solido{grid-template-columns:1fr}
+  .stage{margin:var(--m) var(--m) 0}
+  .solido .txt{padding:32px var(--m) var(--m)}
+  .band{grid-template-columns:1fr}
+  .band img{width:96px}
+}
+@media (max-width:860px){
+  .board{height:auto;min-height:0;grid-template-columns:1fr;grid-template-rows:auto;gap:6px;padding:6px}
+  .top{grid-template-columns:60px 1fr;gap:6px}
+  .top nav{display:none}
+  .t-name{min-height:30svh;padding:20px}
+  .t-name h1{font-size:clamp(3.5rem,19vw,9rem)}
+  .t-3d{aspect-ratio:4/3}
+  .t-two{gap:6px;order:3}
+  .t-two>div{padding:16px}
+  .t-img{aspect-ratio:4/3;order:4}
+  .t-navy .btn{padding:12px 14px;width:100%}
+  .spines{flex-wrap:wrap;min-height:0;gap:6px}
+  .spine{flex:1 1 0;padding:12px 8px;min-height:72px}
+  .spine b{font-size:var(--step-lead)}
+  .spine span{display:none}
+  .spine:hover{transform:none}
+  .panel{order:99!important;flex:1 0 100%}
+  .items{grid-template-columns:1fr}
+  .zona dl{grid-template-columns:1fr}
+  .faq .cols{grid-template-columns:1fr}
+  .strip{grid-template-columns:1fr 1fr}
+  .strip>div{height:auto;aspect-ratio:1;min-height:0}
+  .strip>div:first-child{grid-column:1/-1;aspect-ratio:4/3}
+  footer .cols4{grid-template-columns:1fr 1fr}
+  .flow{gap:28px 16px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv,.js .board .tile{opacity:1;transform:none}
+  .js h2.ws .w>span{transform:none}
+  .js .t-name h1 span{transform:none}
+
+  .zona .draw{stroke-dashoffset:0}.zona .dot{transform:none;opacity:1}.zona .lbl{opacity:1}
+  .js .flow .paso:not(.in) rect{transform:none;opacity:1}
+}
+</style>
+</head>
+<body>
+
+<header class="board" id="inicio">
+  <div class="top">
+    <a class="logo tile" href="#inicio" aria-label="Profe Carlo, inicio">π</a>
+    <nav class="tile" style="--d:1" aria-label="Secciones">
+      <a href="#zona">Zona</a><a href="#temas">Temas</a><a href="#precios">Precios</a><a href="#preguntas">Preguntas</a>
+    </nav>
+    <a class="btn tile" style="--d:2" href="test/index.html">Test gratis</a>
+  </div>
+  <div class="t-name tile" style="--d:2">
+    <h1 aria-label="Profe Carlo"><span style="--i:0">P</span><span style="--i:1">r</span><span style="--i:2">o</span><span style="--i:3">f</span><span style="--i:4">e</span><br><span style="--i:5">C</span><span style="--i:6">a</span><span style="--i:7">r</span><span style="--i:8">l</span><span style="--i:9">o</span></h1>
+    <p class="lead">Clases particulares de matemáticas en todo Villa Club, Carabayllo.</p>
+  </div>
+  <div class="t-3d tile" style="--d:3">
+    <canvas id="hero3d" role="img" aria-label="Icosaedro en tres dimensiones que puedes girar"></canvas>
+    <p class="small">Gíralo con el dedo. <a href="#solido">Cuenta sus caras en la mini clase</a></p>
+  </div>
+  <div class="t-img tile" style="--d:4">
+    <canvas class="fig" data-fig="seno" aria-hidden="true"></canvas>
+  </div>
+  <div class="t-two">
+    <div class="t-ink tile" style="--d:5"><p class="lead">Toda la secundaria, de 1.º a 5.º, y primeros ciclos de universidad. En tu casa o por videollamada.</p></div>
+    <div class="t-navy tile" style="--d:6">
+      <p class="lead">Un test gratis de 15 minutos dice qué temas reforzar.</p>
+      <div class="acts"><a class="btn w" href="test/index.html">Hacer el test gratis</a><a class="ul" data-wa="Hola, quiero separar una clase de matemáticas.">Separar una clase</a></div>
+    </div>
+  </div>
+</header>
+<nav class="rail" id="rail" aria-label="Secciones de la página">
+  <div class="in"><a href="#zona">Zona</a><a href="#temas">Temas</a><a href="#solido">Mini clase</a><a href="#ejercicios">Ejercicios</a><a href="#pasos">Cómo empezamos</a><a href="#precios">Precios</a><a href="#carlo">Sobre mí</a><a href="#preguntas">Preguntas</a><a class="cta" href="test/index.html">Test gratis</a></div>
+  <i id="prog"></i>
+</nav>
+
+<main>
+<section class="sec ax zona" id="zona">
+  <figure class="side rv">
+    <svg viewBox="0 0 400 400" role="img" aria-label="Diagrama: Villa Club al centro y, en círculos cada vez más amplios, Carabayllo, Comas, Los Olivos y las clases virtuales">
+      <circle class="draw" style="--i:0" pathLength="1" cx="200" cy="200" r="62"/>
+      <circle class="draw" style="--i:1" pathLength="1" cx="200" cy="200" r="112"/>
+      <circle class="draw" style="--i:2" pathLength="1" cx="200" cy="200" r="158"/>
+      <circle fill="none" stroke="#0a0a0a" stroke-width="2.5" stroke-dasharray="3 9" cx="200" cy="200" r="194"/>
+      <g class="arm"><line x1="200" y1="200" x2="200" y2="6" stroke="#2436ff" stroke-width="2.5"/></g>
+      <circle class="dot" style="--i:0" cx="200" cy="200" r="11" fill="#2436ff"/>
+      <circle class="dot" style="--i:0" cx="254" cy="169" r="7"/><circle class="dot" style="--i:1" cx="103" cy="256" r="7"/><circle class="dot" style="--i:2" cx="298" cy="324" r="7"/>
+      <text class="lbl" style="--i:0" x="150" y="232" fill="#2436ff">Villa Club</text>
+      <text class="lbl" style="--i:0" x="266" y="164">Carabayllo</text>
+      <text class="lbl" style="--i:1" x="116" y="262">Comas</text>
+      <text class="lbl" style="--i:2" x="196" y="330">Los Olivos</text>
+    </svg>
+    <figcaption class="small">Villa Club al centro. El círculo punteado son las clases virtuales: llegan a todo el Perú.</figcaption>
+  </figure>
+  <div>
+    <h2 class="rv">Voy a todo Villa Club</h2>
+    <p class="lead rv" style="--d:1">A cualquier etapa, sin cobrarte movilidad. También voy a Carabayllo, Comas y Los Olivos, y doy clases virtuales al resto de Lima y a provincias.</p>
+    <dl>
+      <div class="rv" style="--d:1"><dt>Presencial</dt><dd>En tu casa, con fichas impresas del tema. En Villa Club la movilidad ya está incluida; en Carabayllo, Comas y Los Olivos se coordina.</dd></div>
+      <div class="rv" style="--d:2"><dt>Virtual</dt><dd>Por Google Meet, con pizarra compartida y las fichas en PDF. Para cualquier distrito de Lima y para provincias.</dd></div>
+      <div class="rv" style="--d:3"><dt>60 minutos</dt><dd>Cada clase dura una hora y trabaja un tema. Lo normal son dos clases por semana, en el horario que coordinemos.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="sec temas" id="temas">
+  <div class="ax">
+    <h2 class="side rv">Temas por grado</h2>
+    <p class="intro rv" style="--d:1">Los colegios más exigentes no llevan un solo curso de Matemática: lo parten en Aritmética, Álgebra, Geometría, Trigonometría y Razonamiento Matemático. Trabajo con esa malla. Si en tu colegio es un solo curso, vemos lo que estén avanzando esa semana.</p>
+  </div>
+  <div class="spines" role="group" aria-label="Elige el grado">
+    <button class="spine" type="button" data-g="1" aria-pressed="true"><b>1.º</b><span>Secundaria</span></button>
+    <button class="spine" type="button" data-g="2" aria-pressed="false"><b>2.º</b><span>Secundaria</span></button>
+    <button class="spine" type="button" data-g="3" aria-pressed="false"><b>3.º</b><span>Secundaria</span></button>
+    <button class="spine" type="button" data-g="4" aria-pressed="false"><b>4.º</b><span>Secundaria</span></button>
+    <button class="spine" type="button" data-g="5" aria-pressed="false"><b>5.º</b><span>Secundaria</span></button>
+    <button class="spine" type="button" data-g="u" aria-pressed="false" aria-label="Universidad"><b>U</b><span>Universidad</span></button>
+    <div class="panel" id="panel" aria-live="polite">
+      <div class="cat"><h3 id="gname">1.º de secundaria</h3><span id="gcount">25 temas</span></div>
+      <p id="tnote"></p>
+      <ul class="items" id="courses"></ul>
+    </div>
+  </div>
+</section>
+
+<section class="solido" id="solido">
+  <div class="stage rv" id="stage">
+    <canvas id="solid" aria-label="Sólido en tres dimensiones que puedes girar con el dedo o el mouse" role="img"></canvas>
+    <p class="hint small">Arrástralo para girarlo</p>
+  </div>
+  <div class="txt">
+    <div class="rv">
+      <h2>Una clase en un minuto</h2>
+      <p class="lead">Así explico: primero lo ves y lo tocas, después sale la fórmula. Elige un sólido y cuenta sus tres partes; cada botón las pinta de azul.</p>
+    </div>
+    <div class="tabsx rv" role="group" aria-label="Elige un sólido" id="solids">
+      <button type="button" data-s="tetra" aria-pressed="false">Tetraedro</button>
+      <button type="button" data-s="cubo" aria-pressed="true">Cubo</button>
+      <button type="button" data-s="octa" aria-pressed="false">Octaedro</button>
+      <button type="button" data-s="dodeca" aria-pressed="false">Dodecaedro</button>
+      <button type="button" data-s="icosa" aria-pressed="false">Icosaedro</button>
+    </div>
+    <div class="rv" style="--d:1">
+      <div class="parts" id="parts" role="group" aria-label="Qué parte contar">
+        <button type="button" data-p="v" aria-pressed="false"><b id="ev">8</b><span>esquinas</span><small>vértices</small></button>
+        <i aria-hidden="true">−</i>
+        <button type="button" data-p="a" aria-pressed="false"><b id="ea">12</b><span>bordes</span><small>aristas</small></button>
+        <i aria-hidden="true">+</i>
+        <button type="button" data-p="c" aria-pressed="false"><b id="ec">6</b><span>caras</span><small>lados planos</small></button>
+        <i aria-hidden="true">=</i>
+        <div class="two"><b>2</b><span>siempre</span></div>
+      </div>
+      <p class="euler-k" id="ek" aria-live="polite"></p>
+      <p class="euler-k">Cambia de sólido: los números cambian, pero esquinas menos bordes más caras siempre da 2. Es la fórmula de Euler, de Geometría de 4.º y 5.º. En clase la descubres así, contando, en vez de memorizarla.</p>
+    </div>
+    <div class="cells rv" style="--d:2">
+      <a href="test/index.html">Hacer el test gratis</a>
+      <a data-wa="Hola, quiero separar una clase de matemáticas.">Separar una clase</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="ejercicios">
+  <div class="mosaic">
+    <div class="m-head rv">
+      <h2>Me acoplo a tu colegio</h2>
+      <p>Unos colegios dejan casos de la vida real y otros casos prácticos. Trabajo con el tipo que te toman a ti. <span id="exn"></span></p>
+      <div class="pick" role="group" aria-label="Tipo de ejercicio" id="extype">
+        <button type="button" data-e="real" aria-pressed="true">Caso de la vida real</button>
+        <button type="button" data-e="prac" aria-pressed="false">Caso práctico</button>
+      </div>
+    </div>
+    <div class="m-prob rv" style="--d:1" aria-live="polite"><p id="exq"></p></div>
+    <div class="m-steps rv">
+      <h3>Se resuelve así</h3>
+      <ol id="exs"></ol>
+    </div>
+    <div class="m-ans rv" style="--d:1"><b id="exa"></b><p>es la respuesta</p></div>
+    <div class="m-img rv" style="--d:2"><canvas class="fig" data-fig="pitagoras" role="img" aria-label="Teorema de Pitágoras dibujándose: 9 más 16 es 25"></canvas></div>
+  </div>
+</section>
+
+<section class="sec pasos" id="pasos">
+  <div class="hd">
+    <h2 class="rv">Así empezamos</h2>
+    <p class="rv" style="--d:1">Cada cuadrito es un tema. Al inicio están regados; el test los ubica, el plan los ordena y las clases los van pintando de azul, que es cuando ya te salen solo.</p>
+  </div>
+  <div class="flow">
+    <div class="paso rv" data-z="0"><svg viewBox="0 0 120 120" aria-hidden="true"></svg><h3>Test gratis</h3><p>15 minutos en línea. Sale un mapa de qué temas dominas y cuáles no.</p></div>
+    <div class="paso rv" data-z="1" style="--d:1"><svg viewBox="0 0 120 120" aria-hidden="true"></svg><h3>Plan a medida</h3><p>Ordeno los temas flojos según lo que viene en tu colegio o en tu sílabo.</p></div>
+    <div class="paso rv" data-z="2" style="--d:2"><svg viewBox="0 0 120 120" aria-hidden="true"></svg><h3>Clases de 60 minutos</h3><p>En tu casa o por Meet, con la ficha del tema y ejercicios del tipo que te dejan.</p></div>
+    <div class="paso rv" data-z="3" style="--d:3"><svg viewBox="0 0 120 120" aria-hidden="true"></svg><h3>Informe del avance</h3><p>Al cierre del mes, test final y un informe claro para tus papás con lo que mejoró.</p></div>
+  </div>
+</section>
+
+<section class="sec precios" id="precios">
+  <div class="pt">
+    <div class="lab">
+      <div class="c"><h2>Precios de lanzamiento</h2></div>
+      <div class="c">Para quién</div>
+      <div class="c">Clases</div>
+      <div class="c">Modalidad</div>
+      <div class="c">Incluye</div>
+      <div class="c"></div>
+    </div>
+    <article class="plan rv">
+      <div class="c"><h3>Clase suelta</h3><p class="price">S/<span data-n="20">20</span><small>la clase virtual</small></p></div>
+      <div class="c"><span class="k">Para quién</span>Una duda puntual o el tema de la semana.</div>
+      <div class="c"><span class="k">Clases</span>Una, de 60 minutos.</div>
+      <div class="c"><span class="k">Modalidad</span>Virtual S/20. Presencial S/25, con la movilidad incluida en Villa Club.</div>
+      <div class="c"><span class="k">Incluye</span>La ficha del tema.</div>
+      <div class="c"><a class="btn" data-wa="Hola, quiero separar una clase suelta de matemáticas.">Separar una clase</a></div>
+    </article>
+    <article class="plan rv" style="--d:1">
+      <div class="c"><h3>Pack examen</h3><p class="price">S/<span data-n="55">55</span><small>por 3 clases</small></p></div>
+      <div class="c"><span class="k">Para quién</span>Llegar listo a un examen que ya tiene fecha.</div>
+      <div class="c"><span class="k">Clases</span>Tres intensivas sobre lo que entra.</div>
+      <div class="c"><span class="k">Modalidad</span>Virtual o presencial.</div>
+      <div class="c"><span class="k">Incluye</span>Un simulacro y un resumen de fórmulas para la noche anterior.</div>
+      <div class="c"><a class="btn" data-wa="Hola, tengo un examen de matemáticas y quiero el Pack examen.">Preparar mi examen</a></div>
+    </article>
+    <article class="plan rec rv" style="--d:2">
+      <div class="c"><h3>Paquete Refuerzo</h3><p class="price">S/<span data-n="150">150</span><small>al mes</small></p></div>
+      <div class="c"><span class="k">Para quién</span>Ponerse al día en serio durante el mes.</div>
+      <div class="c"><span class="k">Clases</span>Ocho, dos por semana. Sale a S/18.75 cada una.</div>
+      <div class="c"><span class="k">Modalidad</span>Virtual o presencial.</div>
+      <div class="c"><span class="k">Incluye</span>Test de ingreso y test final, plan personalizado, informe para tus papás y dudas por WhatsApp.</div>
+      <div class="c"><a class="btn" data-wa="Hola, me interesa el Paquete Refuerzo de matemáticas.">Quiero el paquete</a></div>
+    </article>
+    <article class="plan rv" style="--d:3">
+      <div class="c"><h3>Universitarios</h3><p class="price">S/<span data-n="30">30</span><small>la hora virtual</small></p></div>
+      <div class="c"><span class="k">Para quién</span>Primeros ciclos, con tu sílabo y tus prácticas.</div>
+      <div class="c"><span class="k">Clases</span>Por hora, las que necesites.</div>
+      <div class="c"><span class="k">Modalidad</span>Virtual S/30. Presencial S/35.</div>
+      <div class="c"><span class="k">Incluye</span>Matemática Básica, Mate 1 y 2, Matemática Discreta y Álgebra Lineal.</div>
+      <div class="c"><a class="btn" data-wa="Hola, soy universitario y necesito ayuda con un curso de matemáticas.">Consultar mi curso</a></div>
+    </article>
+  </div>
+  <div class="yape"><p class="rv">El pago es solo por Yape. La clase suelta se paga el mismo día y el paquete al inicio del mes.</p></div>
+</section>
+
+<section class="sec sobre" id="carlo">
+  <div class="bio">
+    <canvas class="fig" data-fig="rosa" aria-hidden="true"></canvas>
+    <h2>Hola, soy Carlo.</h2>
+    <p>Soy estudiante de 10.º ciclo de Ingeniería de Sistemas y doy clases particulares de matemáticas en Villa Club, Carabayllo. Explico con calma y paso a paso, y no avanzo hasta que el ejercicio te salga a ti solo. Antes de la primera clase tomas un <a class="ul" href="test/index.html">test gratis de 15 minutos</a>; con eso sé en qué tema te trabas y armo un plan para ti, no una clase genérica.</p>
+    <p class="p2">Como también programo, uso herramientas propias: el test en línea, fichas hechas a tu medida y un informe para tus papás. Aquí todavía no hay reseñas porque recién empiezo; las pondré cuando sean de alumnos reales.</p>
+  </div>
+  <div class="facts small">
+    <p><b>Dónde</b>Villa Club, Carabayllo</p>
+    <p><b>WhatsApp</b>991 053 535</p>
+    <p><b>Pago</b>Solo Yape</p>
+  </div>
+</section>
+
+<section class="sec ax faq" id="preguntas">
+  <div class="side">
+    <h2>Preguntas frecuentes</h2>
+    <figure><canvas class="fig" data-fig="parabola" role="img" aria-label="Parábola con una recta tangente que se mueve"></canvas></figure>
+  </div>
+  <div class="cols">
+    <p><b>¿Preparas para admisión a la universidad?</b> No. Es refuerzo de las clases del colegio y de los primeros ciclos de universidad: entender el tema, hacer la tarea y llegar bien al examen.</p>
+    <p><b>Mi colegio es exigente, ¿igual sirve?</b> Sí. Trabajo con la malla de cinco cursos (Aritmética, Álgebra, Geometría, Trigonometría y Razonamiento Matemático) y con las prácticas que te dejan.</p>
+    <p><b>¿Cuánto dura y cada cuánto es la clase?</b> Cada clase dura 60 minutos. Lo recomendable son dos por semana; el horario lo coordinamos por WhatsApp.</p>
+    <p><b>¿Cobras movilidad?</b> En Villa Club no, en ninguna etapa. Para Carabayllo, Comas y Los Olivos se coordina según la distancia. Las clases virtuales no tienen ningún costo extra.</p>
+    <p><b>¿Cómo se paga?</b> Solo por Yape. La clase suelta se paga el mismo día y el paquete al inicio del mes.</p>
+    <p><b>¿Qué pasa si falto a una clase?</b> Se reprograma dentro del mismo mes si avisas con un día de anticipación. Si es una emergencia, me escribes y lo vemos.</p>
+    <p><b>¿El test tiene algún costo?</b> Ninguno. Hay uno para cada grado, de 1.º a 5.º de secundaria. Son 12 preguntas, toma unos 15 minutos y al final ves tu resultado por tema, en qué te equivocaste y por qué.</p>
+    <p><b>¿Ayudas a universitarios?</b> Sí, de primeros ciclos: Matemática Básica, Mate 1 y 2, Matemática Discreta y Álgebra Lineal, con tu sílabo y tus prácticas. Mándamelos con 2 o 3 días de anticipación y preparo la clase con tus ejercicios.</p>
+  </div>
+</section>
+</main>
+
+<section id="empieza">
+  <div class="strip">
+    <div class="sa"><canvas class="fig" data-fig="poligono" data-fg="#fff" aria-hidden="true"></canvas></div>
+    <div class="sb"><canvas class="fig" data-fig="primos" aria-hidden="true"></canvas></div>
+    <div class="sc"><canvas class="fig" data-fig="lissajous" data-fg="#fff" data-ac="#fff" aria-hidden="true"></canvas></div>
+  </div>
+  <div class="band">
+    <div class="rv">
+      <h2>Antes de pagar nada, <a href="test/index.html">haz el test gratis</a></h2>
+      <p class="sub">Dura 15 minutos y al final ves qué temas reforzar. Si prefieres hablar primero, <a class="ul" data-wa="Hola, quiero información de las clases de matemáticas.">escríbeme por WhatsApp</a>.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="cols4">
+    <ul><li>Zona</li><li><a href="#zona">Todo Villa Club, Carabayllo</a></li><li><a href="#zona">Comas y Los Olivos</a></li><li><a href="#zona">Virtual a todo el Perú</a></li></ul>
+    <ul><li>La página</li><li><a href="#temas">Temas por grado</a></li><li><a href="#solido">Mini clase</a></li><li><a href="#ejercicios">Tipos de ejercicio</a></li><li><a href="#pasos">Cómo empezamos</a></li></ul>
+    <ul><li>Empezar</li><li><a href="test/index.html">Test gratis</a></li><li><a href="#precios">Precios</a></li><li><a href="#preguntas">Preguntas</a></li></ul>
+    <ul><li>Contacto</li><li><a data-wa="Hola, quiero información de las clases de matemáticas.">WhatsApp 991 053 535</a></li><li>Pagos solo por Yape</li><li><a href="#inicio">Volver arriba</a></li></ul>
+  </div>
+  <svg class="word" viewBox="0 0 800 150" role="img" aria-label="Profe Carlo"><text x="0" y="132" textLength="800" lengthAdjust="spacingAndGlyphs">Profe Carlo</text></svg>
+  <div class="legal small"><span>Profe Carlo, 2026.</span><span>Pagos solo por Yape.</span></div>
+</footer>
+
+<a class="fab" data-wa="Hola, quiero información de las clases de matemáticas." aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" aria-hidden="true"><path d="M16 4a12 12 0 0 0-10.3 18.2L4 28l6-1.6A12 12 0 1 0 16 4Z"/><path d="M11.5 12.5c0 4 4 8 8 8" stroke-linecap="round"/></svg>
+</a>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const WA="51991053535",still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+$$('[data-wa]').forEach(a=>{a.href=`https://wa.me/${WA}?text=${encodeURIComponent(a.dataset.wa)}`;a.target='_blank';a.rel='noopener'});
+
+
+/* figuras que se dibujan solas */
+const PR=n=>{if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i==0)return false;return true};
+function fig(cv){const k=cv.dataset.fig,fg=cv.dataset.fg||'#0a0a0a',ac=cv.dataset.ac||'#2436ff',x=cv.getContext('2d');let w=0,h=0,vis=false;const t0=performance.now();
+  const size=()=>{const r=cv.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);w=r.width;h=r.height;cv.width=Math.round(w*d);cv.height=Math.round(h*d);x.setTransform(d,0,0,d,0,0)};
+  const L=(pts,c,lw,close,fill)=>{x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));if(close)x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(c){x.strokeStyle=c;x.lineWidth=lw;x.stroke()}};
+  const dot=(a,b,r,c)=>{x.beginPath();x.arc(a,b,r,0,7);x.fillStyle=c;x.fill()};
+  const ez=p=>p<0?0:p>1?1:1-Math.pow(1-p,3);
+  const txt=(s,a,b,px,c)=>{x.font=`600 ${px}px "Bricolage Grotesque",sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillStyle=c;x.fillText(s,a,b)};
+  const D={
+    seno(t,s,lw){const r=Math.min(h*.3,w*.15),cx=r+w*.07,cy=h/2,a=t*1.3,x0=cx+r+w*.06,P=[cx+r*Math.cos(a),cy-r*Math.sin(a)];
+      x.globalAlpha=.25;L([[w*.04,cy],[w*.96,cy]],fg,lw*.6);L([[cx,cy-r*1.25],[cx,cy+r*1.25]],fg,lw*.6);x.globalAlpha=1;
+      x.beginPath();x.arc(cx,cy,r,0,7);x.strokeStyle=fg;x.lineWidth=lw;x.stroke();
+      const pts=[];for(let px=x0;px<w*.96;px+=3)pts.push([px,cy-r*Math.sin(a-(px-x0)/r)]);L(pts,fg,lw);
+      L([[cx,cy],P],ac,lw*1.4);x.setLineDash([5,7]);L([P,[x0,P[1]]],ac,lw*.8);x.setLineDash([]);dot(P[0],P[1],lw*2.6,ac);dot(x0,P[1],lw*2.6,ac)},
+    pitagoras(t,s,lw){const u=s/12.5,ox=w/2-2*u,oy=h/2+1.5*u,p=t%9,q1=ez(p/1.2),q2=ez((p-1.2)/1.2),q3=ez((p-2.4)/1.5),A=[ox+4*u,oy],B=[ox,oy-3*u],O=[ox,oy];
+      x.globalAlpha=1-ez((p-8)/1);
+      L([A,O,[ox,oy+4*u*q1],[ox+4*u,oy+4*u*q1]],fg,lw,true);L([O,B,[ox-3*u*q2,oy-3*u],[ox-3*u*q2,oy]],fg,lw,true);
+      L([A,B,[B[0]+3*u*q3,B[1]-4*u*q3],[A[0]+3*u*q3,A[1]-4*u*q3]],null,0,true,ac);
+      L([A,O,B],fg,lw*1.6,true,'#f1f1f1');
+      if(q1>.9)txt('16',ox+2*u,oy+2*u,u*1.2,fg);if(q2>.9)txt('9',ox-1.5*u,oy-1.5*u,u*1.2,fg);if(q3>.9)txt('25',ox+3.5*u,oy-3.5*u,u*1.5,'#fff');x.globalAlpha=1},
+    poligono(t,s,lw){const R=s*.34,cx=w/2,cy=h/2,st=t/1.8,n=3+Math.floor(st)%8,f=ez((st%1)/.45),rot=t*.25-Math.PI/2;
+      x.globalAlpha=.35;x.beginPath();x.arc(cx,cy,R,0,7);x.strokeStyle=fg;x.lineWidth=lw*.7;x.stroke();x.globalAlpha=1;
+      const pts=[];for(let i=0;i<n;i++){const a=rot+i/n*6.2832*f;pts.push([cx+R*Math.cos(a),cy+R*Math.sin(a)])}
+      L(pts,fg,lw*1.3,true);pts.forEach(p=>dot(p[0],p[1],lw*2.4,ac));txt(n,cx,cy,s*.16,fg)},
+    primos(t,s,lw){const g=s*.8/10,x0=w/2-g*5,y0=h/2-g*5,n=Math.floor(t*9)%135;
+      for(let m=1;m<=100;m++){const c=(m-1)%10,r=Math.floor((m-1)/10),a=x0+c*g,b=y0+r*g;
+        if(m<=n&&PR(m)){const k=ez((n-m)/6);x.fillStyle=ac;x.fillRect(a+g*.5-g*.42*k,b+g*.5-g*.42*k,g*.84*k,g*.84*k);if(g>26)txt(m,a+g/2,b+g/2,g*.36,'#fff')}
+        else{x.globalAlpha=m<=n?.22:.6;dot(a+g/2,b+g/2,g*.09,fg);x.globalAlpha=1}}},
+    lissajous(t,s,lw){const R=s*.36,cx=w/2,cy=h/2,ph=t*.35,pts=[];for(let i=0;i<=360;i++){const a=i/360*6.2832;pts.push([cx+R*Math.sin(3*a+ph),cy+R*Math.sin(2*a)])}
+      L(pts,fg,lw);const a=t*.6;dot(cx+R*Math.sin(3*a+ph),cy+R*Math.sin(2*a),lw*3,ac)},
+    rosa(t,s,lw){const R=s*.42,cx=w/2,cy=h/2,p=ez((t%10)/6),rot=t*.12,pts=[];for(let i=0;i<=300*p;i++){const a=i/300*Math.PI,r=R*Math.cos(5*a);pts.push([cx+r*Math.cos(a+rot),cy+r*Math.sin(a+rot)])}
+      if(pts.length>1){L(pts,ac,lw*1.2);const e=pts[pts.length-1];dot(e[0],e[1],lw*2.2,fg)}},
+    parabola(t,s,lw){const cx=w/2,by=h*.84,sx=s*.36/2.2,sy=h*.66/4.84,X=v=>cx+v*sx,Y=v=>by-v*sy,a=2*Math.sin(t*.7);
+      x.globalAlpha=.3;L([[w*.08,by],[w*.92,by]],fg,lw*.7);L([[cx,h*.1],[cx,h*.92]],fg,lw*.7);for(let i=-2;i<=2;i++)L([[X(i),by-4],[X(i),by+4]],fg,lw*.7);x.globalAlpha=1;
+      const pts=[];for(let v=-2.2;v<=2.2;v+=.05)pts.push([X(v),Y(v*v)]);L(pts,fg,lw*1.2);
+      x.save();x.beginPath();x.rect(0,h*.06,w,by-h*.06);x.clip();L([[X(a-1.1),Y(a*a-2.2*a)],[X(a+1.1),Y(a*a+2.2*a)]],ac,lw*1.2);x.restore();
+      x.setLineDash([4,6]);L([[X(a),Y(a*a)],[X(a),by]],ac,lw*.8);x.setLineDash([]);dot(X(a),Y(a*a),lw*2.6,ac)}
+  };
+  function frame(now){if(!w)size();if(!w)return;x.clearRect(0,0,w,h);x.lineJoin=x.lineCap='round';const s=Math.min(w,h);D[k]((now-t0)/1000,s,Math.max(1.5,s*.008));if(vis&&!still)requestAnimationFrame(frame)}
+  new IntersectionObserver(es=>{const v=es[0].isIntersecting;if(v&&!vis){vis=true;size();requestAnimationFrame(still?()=>frame(t0+3400):frame)}else vis=v}).observe(cv);
+  addEventListener('resize',()=>{size();if(still)frame(t0+3400)});
+}
+$$('canvas.fig').forEach(fig);
+new IntersectionObserver(es=>document.querySelector('.fab').classList.toggle('off',es[0].isIntersecting),{threshold:.25}).observe(document.querySelector('.board'));
+
+/* entradas */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+$$('h2').forEach(h=>{if(h.children.length||h.closest('.bio'))return;h.innerHTML=h.textContent.trim().split(/\s+/).map((w,i)=>`<span class="w" style="--i:${i}"><span>${w}</span></span>`).join(' ');h.classList.add('ws');h.classList.remove('rv');h.style.removeProperty('--d')});
+$$('.mosaic>*,.faq .cols p,.facts p,.strip>*').forEach((e,i)=>{e.classList.add('rv');e.style.setProperty('--d',i%4)});
+$$('.rv,h2.ws').forEach(e=>io.observe(e));
+/* barra de secciones: dónde estás y cuánto falta */
+(function(){const rail=$('#rail'),box=rail.querySelector('.in'),L=$$('#rail a[href^="#"]'),S=L.map(a=>$(a.getAttribute('href'))),head=$('.board');let cur=-1,tk=false;
+  function upd(){tk=false;const y=scrollY,max=document.documentElement.scrollHeight-innerHeight;
+    rail.classList.toggle('on',y>head.offsetHeight-60);rail.style.setProperty('--p',max>0?Math.min(1,y/max).toFixed(4):0);
+    let k=-1;S.forEach((s,i)=>{if(s.getBoundingClientRect().top<=innerHeight*.35)k=i});
+    if(k!=cur){cur=k;L.forEach((a,i)=>{a.classList.toggle('on',i==k);if(i==k)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current')});
+      if(k>=0){const a=L[k];box.scrollTo({left:a.offsetLeft-box.clientWidth/2+a.offsetWidth/2,behavior:still?'auto':'smooth'})}}}
+  addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(upd)}},{passive:true});addEventListener('resize',upd);upd()})();
+const pio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){pio.unobserve(e.target);count(e.target)}}),{threshold:.6});
+$$('[data-n]').forEach(e=>pio.observe(e));
+function count(el){if(still)return;const n=+el.dataset.n,t0=performance.now();
+  (function f(t){const p=Math.min(1,(t-t0)/1100),k=1-Math.pow(1-p,4);el.textContent=Math.round(n*k);if(p<1)requestAnimationFrame(f)})(t0)}
+
+/* temas por grado */
+const T={
+ 1:{n:"En 1.º se pasa de la primaria al álgebra: enteros, fracciones y las primeras ecuaciones.",c:{
+  "Aritmética":["Conjuntos","Números enteros","Divisibilidad","MCD y MCM","Fracciones y decimales","Potenciación y radicación"],
+  "Álgebra":["Expresiones algebraicas","Términos semejantes","Leyes de exponentes","Monomios y polinomios","Ecuaciones de 1.er grado"],
+  "Geometría":["Segmentos","Ángulos","Rectas paralelas y secantes","Triángulos","Perímetros y áreas"],
+  "Trigonometría":["Ángulo trigonométrico","Sistemas de medición angular"],
+  "Raz. Matemático":["Sucesiones","Operadores matemáticos","Cuatro operaciones","Planteo de ecuaciones","Conteo de figuras"]}},
+ 2:{n:"En 2.º se arma la base: proporciones, ecuaciones y los primeros triángulos.",c:{
+  "Aritmética":["Razones y proporciones","Magnitudes proporcionales","Regla de tres","Porcentajes","Promedios","MCD y MCM"],
+  "Álgebra":["Leyes de exponentes","Polinomios","Productos notables","Factorización","Ecuaciones de 1.er grado","Sistemas de ecuaciones"],
+  "Geometría":["Segmentos y ángulos","Triángulos","Líneas notables","Congruencia","Cuadriláteros"],
+  "Trigonometría":["Sistemas de medición angular","Longitud de arco","Razones trigonométricas"],
+  "Raz. Matemático":["Planteo de ecuaciones","Problemas de edades","Sucesiones","Operadores","Conteo de figuras"]}},
+ 3:{n:"En 3.º suben la división algebraica, la semejanza y los triángulos notables.",c:{
+  "Aritmética":["Numeración","Divisibilidad","Números primos","Fracciones y decimales","Regla de interés","Mezclas"],
+  "Álgebra":["División algebraica (Ruffini y Horner)","Factorización","Ecuación cuadrática","Inecuaciones","Funciones"],
+  "Geometría":["Circunferencia","Proporcionalidad y semejanza","Teorema de Pitágoras","Relaciones métricas","Áreas"],
+  "Trigonometría":["Triángulos notables","Ángulos de elevación y depresión","Razones de cualquier ángulo"],
+  "Raz. Matemático":["Móviles","Cronometría","Series","Conteo y combinatoria básica"]}},
+ 4:{n:"En 4.º entran funciones, logaritmos, identidades y geometría del espacio.",c:{
+  "Aritmética":["Lógica proposicional","Conjuntos","Estadística","Análisis combinatorio","Probabilidad"],
+  "Álgebra":["Números reales","Valor absoluto","Funciones","Logaritmos","Matrices"],
+  "Geometría":["Relaciones métricas","Polígonos regulares","Áreas de regiones","Prisma y pirámide"],
+  "Trigonometría":["Reducción al primer cuadrante","Circunferencia trigonométrica","Identidades","Ángulos compuestos"],
+  "Raz. Matemático":["Series y sumatorias","Razonamiento lógico","Certezas","Áreas sombreadas"]}},
+ 5:{n:"En 5.º se cierra con geometría analítica, ecuaciones trigonométricas y repaso general.",c:{
+  "Aritmética":["Estadística","Probabilidad","Combinatoria","Sucesiones","Repaso general"],
+  "Álgebra":["Función exponencial y logarítmica","Números complejos","Determinantes","Programación lineal"],
+  "Geometría":["Cilindro, cono y esfera","Recta y circunferencia","Parábola"],
+  "Trigonometría":["Ángulos múltiples","Ecuaciones trigonométricas","Ley de senos y cosenos","Funciones trigonométricas"],
+  "Raz. Matemático":["Orden de información","Lógica","Máximos y mínimos","Probabilidades"]}},
+ u:{n:"Para universitarios de primeros ciclos. Mándame tu sílabo y tus prácticas con 2 o 3 días de anticipación y preparo la clase con tus ejercicios.",c:{
+  "Matemática Básica":["Lógica y conjuntos","Números reales","Funciones","Geometría analítica"],
+  "Mate 1":["Límites y continuidad","Derivadas","Razón de cambio","Optimización"],
+  "Mate 2":["Integral indefinida","Técnicas de integración","Integral definida","Áreas y volúmenes"],
+  "Matemática Discreta":["Lógica y demostraciones","Conjuntos y relaciones","Inducción","Conteo","Grafos y árboles"],
+  "Álgebra Lineal":["Matrices","Determinantes","Sistemas de ecuaciones","Vectores"]}}};
+const GL={"Aritmética":"%","Álgebra":"x²","Geometría":"△","Trigonometría":"θ","Raz. Matemático":"?"};
+const SP=$$('.spine');
+function temas(g){const d=T[g];
+  $('#gname').textContent=g=='u'?'Primeros ciclos':g+'.º de secundaria';
+  $('#gcount').textContent=Object.values(d.c).flat().length+' temas';$('#tnote').textContent=d.n;
+  $('#courses').innerHTML=Object.entries(d.c).map(([k,v],i)=>`<li class="item" style="--i:${i}"><span class="gl" aria-hidden="true">${GL[k]||"∑"}</span><div><h4>${k}</h4><p>${v.join(', ')}.</p></div></li>`).join('');
+  SP.forEach((b,i)=>{const on=b.dataset.g==g;b.setAttribute('aria-pressed',on);b.style.order=i*2;if(on)$('#panel').style.order=i*2+1})}
+SP.forEach(b=>b.onclick=()=>temas(b.dataset.g));temas(1);
+
+/* tipos de ejercicio */
+const EX={
+ real:{n:"Este es un problema con contexto: primero hay que traducirlo a números.",
+  q:"En una bodega de Villa Club, el kilo de pollo subió de S/9.00 a S/10.80. ¿En qué porcentaje subió?",
+  s:["Cuánto subió: 10.80 − 9.00 = 1.80","Qué parte del precio inicial es: 1.80 ÷ 9.00 = 0.20","En porcentaje: 0.20 × 100 = 20"],a:"20 %"},
+ prac:{n:"Este es el ejercicio directo, tipo academia, donde mandan la técnica y la rapidez.",
+  q:"Si a/b = 3/5 y a + b = 64, halla b − a.",
+  s:["Se plantea a = 3k y b = 5k","3k + 5k = 64, entonces k = 8","a = 24 y b = 40"],a:"16"}};
+function ejercicio(k){const d=EX[k];
+  $('#exn').textContent=d.n;$('#exq').textContent=d.q;$('#exa').textContent=d.a;
+  $('#exs').innerHTML=d.s.map((x,i)=>`<li style="--i:${i}">${x}</li>`).join('');
+  $$('#extype button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.e==k));play()}
+function play(){[$('#exs'),$('#exa')].forEach(e=>{e.classList.remove('play');void e.offsetWidth;e.classList.add('play')})}
+$$('#extype button').forEach(b=>b.onclick=()=>ejercicio(b.dataset.e));
+new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){o.disconnect();play()}},{threshold:.5}).observe($('#exs'));
+ejercicio('real');
+
+/* pasos: cuadritos que se ordenan */
+(function(){let s=7;const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+  const blue=[0,10,22,36];
+  $$('.flow .paso').forEach(p=>{const z=+p.dataset.z,svg=p.querySelector('svg');let h='';
+    const idx=[...Array(36).keys()].map(i=>[rnd(),i]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]),on=new Set(idx.slice(0,blue[z]));
+    for(let i=0;i<36;i++){let x=10+(i%6)*17.4,y=10+Math.floor(i/6)*17.4,r=0;
+      if(z==0){x=8+rnd()*92;y=8+rnd()*92;r=rnd()*60-30}
+      h+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="12.6" height="12.6" fill="${on.has(i)?'#2436ff':'#b9b9b9'}" ${r?`transform="rotate(${r.toFixed(0)} ${(x+6.3).toFixed(1)} ${(y+6.3).toFixed(1)})"`:''} style="--i:${i};--x:${(rnd()*80-40).toFixed(0)}px;--y:${(rnd()*80-40).toFixed(0)}px;--r:${(rnd()*180-90).toFixed(0)}deg"/>`}
+    svg.innerHTML=h})})();
+
+/* sólidos 3D */
+const SOL={tetra:[4,6,4],cubo:[8,12,6],octa:[6,12,8],dodeca:[20,30,12],icosa:[12,30,20]};
+const SN={tetra:'el tetraedro',cubo:'el cubo',octa:'el octaedro',dodeca:'el dodecaedro',icosa:'el icosaedro'};
+let build3D=null,hl3D=null,part=null,toured=false;
+function solido(k){const [v,a,c]=SOL[k];
+  [['#ev',v],['#ea',a],['#ec',c]].forEach(([s,n])=>{const e=$(s);e.textContent=n;e.classList.remove('tick');void e.offsetWidth;e.classList.add('tick')});
+  $('#ek').textContent=`En ${SN[k]}: ${v} − ${a} + ${c} = 2.`;
+  $$('#solids button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.s==k));
+  build3D&&build3D(k)}
+function parte(p){part=p;$$('#parts button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.p==p));hl3D&&hl3D(p)}
+$$('#solids button').forEach(b=>b.onclick=()=>{toured=true;solido(b.dataset.s)});
+$$('#parts button').forEach(b=>b.onclick=()=>{toured=true;parte(part==b.dataset.p?null:b.dataset.p)});
+solido('cubo');
+/* al llegar a la sección, la clase se muestra sola una vez: esquinas, bordes, caras */
+new IntersectionObserver((es,o)=>{if(!es[0].isIntersecting)return;o.disconnect();if(still)return;
+  ['v','a','c',null].forEach((p,i)=>setTimeout(()=>{if(!toured)parte(p)},700+i*1500))},{threshold:.6}).observe($('#parts'));
+
+function make3D(cv,o){
+  let R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true})}catch(e){cv.remove();return null}
+  R.setPixelRatio(Math.min(devicePixelRatio,2));
+  const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(34,1,.1,100);C.position.z=o.z;
+  S.add(new THREE.AmbientLight(0xffffff,.8));const L=new THREE.DirectionalLight(0xffffff,.5);L.position.set(3,5,6);S.add(L);
+  const G=new THREE.Group();G.rotation.set(.45,.6,0);S.add(G);
+  const geo={tetra:()=>new THREE.TetrahedronGeometry(2.45),cubo:()=>new THREE.BoxGeometry(2.7,2.7,2.7),octa:()=>new THREE.OctahedronGeometry(2.3),
+    dodeca:()=>new THREE.DodecahedronGeometry(2.1),icosa:()=>new THREE.IcosahedronGeometry(2.2)};
+  const vm=new THREE.MeshBasicMaterial({color:o.edge}),em=new THREE.MeshBasicMaterial({color:o.edge}),up=new THREE.Vector3(0,1,0);
+  const fm=new THREE.MeshPhongMaterial({color:o.face,transparent:true,opacity:o.op,flatShading:true,side:THREE.DoubleSide,depthWrite:false});
+  let grow=1,vs=[],es=[],tv=1,te=1,sv=1,se=1,top=o.op;
+  const hl=p=>{const D=0xc4c4c4;vm.color.setHex(p=='v'?o.face:p?D:o.edge);em.color.setHex(p=='a'?o.face:p=='v'?D:o.edge);
+    tv=p=='v'?2.4:p?.6:1;te=p=='a'?2.2:p=='v'?.7:1;top=p=='c'?.94:p?.05:o.op;
+    fm.depthWrite=p=='c';fm.side=p=='c'?THREE.FrontSide:THREE.DoubleSide;fm.needsUpdate=true};
+  const build=k=>{
+    while(G.children.length){const m=G.children[0];G.remove(m);m.geometry.dispose()}vs=[];es=[];
+    const g=geo[k]();
+    G.add(new THREE.Mesh(g,fm));
+    const e=new THREE.EdgesGeometry(g,1).attributes.position,seen=new Set();
+    for(let i=0;i<e.count;i+=2){
+      const a=new THREE.Vector3().fromBufferAttribute(e,i),b=new THREE.Vector3().fromBufferAttribute(e,i+1),d=b.clone().sub(a),len=d.length();
+      const m=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,len,8),em);m.position.copy(a).add(b).multiplyScalar(.5);m.quaternion.setFromUnitVectors(up,d.normalize());G.add(m);es.push(m);
+      [a,b].forEach(p=>{const key=p.toArray().map(n=>n.toFixed(2)).join();if(seen.has(key))return;seen.add(key);
+        const s=new THREE.Mesh(new THREE.SphereGeometry(.13,14,14),vm);s.position.copy(p);G.add(s);vs.push(s)})}
+    grow=.45};
+  const size=()=>{const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;R.setSize(w,h,false);C.aspect=w/h;C.position.z=o.z*(w<h?h/w:1);C.updateProjectionMatrix()};size();addEventListener('resize',size);
+  let vx=0,vy=0,drag=false,px=0,py=0,vis=false;
+  cv.addEventListener('pointerdown',e=>{drag=true;px=e.clientX;py=e.clientY;cv.setPointerCapture(e.pointerId)});
+  cv.addEventListener('pointermove',e=>{if(!drag)return;vx=(e.clientX-px)*.009;vy=(e.clientY-py)*.009;px=e.clientX;py=e.clientY});
+  ['pointerup','pointercancel'].forEach(t=>cv.addEventListener(t,()=>drag=false));
+  new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis)size()},{threshold:0}).observe(cv);
+  (function loop(){requestAnimationFrame(loop);if(!vis)return;
+    G.rotation.y+=vx+(drag||still?0:.006);G.rotation.x+=vy;vx*=.94;vy*=.94;
+    grow+=(1-grow)*.09;G.scale.setScalar(grow);
+    sv+=(tv-sv)*.14;se+=(te-se)*.14;fm.opacity+=(top-fm.opacity)*.14;vs.forEach(m=>m.scale.setScalar(sv));es.forEach(m=>m.scale.set(se,1,se));R.render(S,C)})();
+  build(o.k);return {build,hl}}
+function init3D(){
+  make3D($('#hero3d'),{edge:0xffffff,face:0x050a5c,op:.55,z:11,k:'icosa'});
+  const m=make3D($('#solid'),{edge:0x0a0a0a,face:0x2436ff,op:.2,z:9.6,k:$('#solids [aria-pressed="true"]').dataset.s});
+  if(m){build3D=m.build;hl3D=m.hl;hl3D(part);$('#stage').classList.add('live')}}
+const s3=document.createElement('script');s3.src='https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+s3.onload=init3D;s3.onerror=()=>{$('#solid').remove();$('#hero3d').remove()};document.head.appendChild(s3);
+</script>
+</body>
+</html>

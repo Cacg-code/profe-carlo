@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test de ingreso gratis · Profe Carlo</title>
+<meta name="description" content="Test gratis de matemáticas para toda la secundaria, de 1.º a 5.º. 12 preguntas, 15 minutos, y al final ves qué temas reforzar.">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff;--surface:#0a0a0a;--muted:#5c5c5c;
+  --red:#5c5c5c;--blue:#2436ff;--teal:#2436ff;--yellow:#2436ff;--black:#0a0a0a;
+  --step-small:clamp(0.8125rem,0.79rem + 0.1vw,0.875rem);
+  --step-body:clamp(1.0625rem,1rem + 0.25vw,1.1875rem);
+  --step-lead:clamp(1.25rem,1.1rem + 0.7vw,1.625rem);
+  --step-head:clamp(2rem,1.3rem + 3.2vw,4rem);
+  --step-display:clamp(5rem,3rem + 12vw,13rem);
+  --m:clamp(16px,4vw,56px);--r:0px;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;--text:"Bricolage Grotesque",system-ui,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  /* campo actual */
+  --f:#fff;--fi:#0a0a0a;--bb:#0a0a0a;--bi:#fff;--ob:#f1f1f1;--oi:#0a0a0a;--sb:#2436ff;--si:#fff;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100svh;display:flex;flex-direction:column;background:var(--f);color:var(--fi);font:400 var(--step-body)/1.5 var(--text);transition:background-color .6s var(--ease),color .3s;overflow-x:clip}
+h1,h2,p,ul,ol{margin:0}ul,ol{padding:0;list-style:none}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer;padding:0}
+:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+h1,h2,.display{font-family:var(--display);font-weight:600;letter-spacing:-0.04em;line-height:1.05}
+h1,h2{font-size:var(--step-head);text-wrap:balance}
+.lead{font-size:var(--step-lead);line-height:1.3}
+.small{font-size:var(--step-small)}
+.hidden{display:none!important}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px var(--m)}
+.mark{font:500 var(--step-lead)/1 var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:10px;min-height:44px}
+.mark i{width:16px;height:16px;border-radius:0;background:var(--bb);display:block;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.back{min-height:44px;display:inline-flex;align-items:center;text-underline-offset:5px;text-decoration-thickness:2px}
+main{flex:1;display:grid;padding:24px var(--m) 48px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:56px;padding:0 28px;border-radius:var(--r);background:var(--bb);color:var(--bi);font-weight:500;text-decoration:none;
+  transition:transform .25s var(--ease),background-color .2s,color .2s,opacity .2s}
+.btn:hover{transform:translateY(-3px);background:var(--blue)}.btn:active{transform:scale(.96)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.txtbtn{min-height:44px;font-weight:500;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
+
+/* inicio */
+#s-start{display:grid;gap:36px;align-content:center}
+.intro .lead{margin-top:20px;max-width:30ch}
+.orb{width:min(44vw,180px);aspect-ratio:1;border-radius:0;overflow:hidden;margin-top:28px}
+.orb g{transform-origin:100px 100px}.orb .o1{animation:spin 14s linear infinite}.orb .o2{animation:spin 22s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+form{display:grid;gap:22px;max-width:560px}
+label,.lab{display:block;font-weight:500;margin-bottom:8px}
+input,select{width:100%;min-height:56px;padding:0 16px;border:0;border-radius:var(--r);background:#f1f1f1;color:var(--black)}
+.grades{display:flex;gap:8px}
+.grade{flex:1;min-height:56px;border-radius:var(--r);background:var(--black);color:#fff;font-family:var(--display);font-weight:600;font-size:var(--step-lead);transition:background-color .2s,color .2s,transform .25s var(--ease)}
+.grade:hover{transform:translateY(-3px)}
+.grade{background:#f1f1f1!important;color:#0a0a0a!important}.grade[aria-pressed="true"]{background:var(--blue)!important;color:#fff!important}
+#err{min-height:1.5em;font-weight:500}
+.rise>*{animation:up .8s var(--ease) both}
+.rise>*:nth-child(2){animation-delay:.1s}.rise>*:nth-child(3){animation-delay:.2s}.rise>*:nth-child(4){animation-delay:.3s}.rise>*:nth-child(5){animation-delay:.4s}.rise>*:nth-child(6){animation-delay:.5s}
+@keyframes up{from{opacity:0;transform:translateY(24px)}}
+
+/* preguntas */
+#s-quiz{display:grid;gap:28px;align-content:start;grid-template-rows:auto 1fr auto}
+.prog{display:flex;align-items:center;gap:16px}
+.dots{display:flex;gap:6px;flex:1}
+.dots i{flex:1;max-width:28px;aspect-ratio:1;border-radius:0;background:var(--ob);transition:background-color .4s,transform .5s var(--ease)}
+.dots i.done{background:var(--sb);transform:scale(.6)}
+.dots i.now{background:var(--bb);transform:scale(1.15)}
+#count{font-weight:500;white-space:nowrap}
+.q{align-self:center}
+.q.swap>*{animation:up .6s var(--ease) both}
+.q.swap>*:nth-child(2){animation-delay:.08s}.q.swap>*:nth-child(3){animation-delay:.16s}
+#topic{font-family:var(--display);font-weight:600;font-size:min(var(--step-display),calc(170vw / var(--len,10)));line-height:.92;letter-spacing:-0.045em;margin-left:-.04em;overflow-wrap:anywhere}
+#qtext{font-size:var(--step-lead);line-height:1.3;font-weight:500;margin-top:20px;max-width:30ch}
+.opts{display:grid;gap:8px;margin-top:24px}
+.opt{display:flex;align-items:center;gap:16px;min-height:64px;padding:10px 18px;border-radius:var(--r);background:var(--ob);color:var(--oi);text-align:left;font-size:var(--step-lead);
+  transition:background-color .2s,color .2s,transform .25s var(--ease)}
+.opt:hover{transform:translateX(6px)}
+.opt b{font-weight:500;flex:none;width:32px;height:32px;border-radius:0;display:grid;place-items:center;background:var(--oi);color:var(--ob);font-size:var(--step-body)}
+.opt[aria-pressed="true"]{background:var(--sb);color:var(--si)}
+.opt[aria-pressed="true"] b{background:var(--si);color:var(--sb)}
+.nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.nav .btn{flex:1 1 200px;max-width:340px}
+
+/* resultado */
+#s-result{display:grid;gap:40px;align-content:start}
+#pct{font-family:var(--display);font-weight:600;font-size:var(--step-display);line-height:.9;letter-spacing:-0.045em;color:var(--yellow);margin:12px 0 8px -.04em}
+#rsum{max-width:36ch}
+.res{display:grid;gap:6px}
+.res-item{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;padding:10px 18px;border-radius:var(--r);background:var(--surface);overflow:hidden;animation:up .6s var(--ease) both;animation-delay:calc(var(--i)*80ms)}
+.res-item i{position:absolute;inset:0;background:var(--c);transform-origin:left;transform:scaleX(var(--w));animation:fill 1.1s var(--ease) both;animation-delay:calc(var(--i)*80ms + .2s)}
+@keyframes fill{from{transform:scaleX(0)}}
+.res-item strong,.res-item span{position:relative;font-weight:500}
+.res-item strong{font-size:var(--step-lead)}
+.res-item{color:#fff}.res-item.ok{--c:#2436ff}.res-item.mid{--c:#131fae}.res-item.low{--c:#5c5c5c}
+.fx{display:inline-block;padding:.08em .45em;margin:.1em .12em;background:#f1f1f1;font-weight:600;white-space:nowrap;box-shadow:inset 0 -3px 0 var(--blue)}
+.fx var{font-style:italic;color:var(--blue);font-family:Georgia,"Times New Roman",serif;font-weight:700;padding:0 .04em}
+.fx sup{font-size:.65em}
+#qtext .fx{font-size:1.15em}
+.opt .fx{background:none;box-shadow:none;padding:0;margin:0;font-weight:inherit}
+.opt[aria-pressed="true"] .fx var{color:inherit}
+.rev,.reco{grid-column:1/-1}
+.rev ol{display:grid;gap:8px;margin-top:24px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.rv-item{background:#f1f1f1;padding:20px;animation:up .6s var(--ease) both;animation-delay:calc(var(--i)*60ms)}
+.rv-item .small{color:var(--muted)}
+.rv-item .rq{font-weight:500;font-size:var(--step-lead);line-height:1.3;margin-top:6px}
+.rv-item .fx{background:#fff}
+.rv-item dl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 0}
+.rv-item dl div{padding:12px 14px;background:#fff}
+.rv-item dt{font-size:var(--step-small);color:var(--muted)}
+.rv-item dd{margin:2px 0 0;font-weight:600;font-size:var(--step-lead)}
+.rv-item .mine dd{text-decoration:line-through;text-decoration-thickness:2px;color:var(--muted)}
+.rv-item .mine dd .fx var{color:inherit}
+.rv-item .mine.none dd{text-decoration:none}
+.nb{white-space:nowrap}
+.rv-item .good{background:var(--blue);color:#fff}
+.rv-item .good dt,.rv-item .good .fx var{color:#fff}
+.rv-item .good .fx,.rv-item .mine .fx{background:none;box-shadow:none;padding:0;margin:0}
+.rv-item .why{margin-top:14px}
+.reco h2{font-size:var(--step-head)}
+.reco p{margin-top:12px;max-width:40ch}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;margin-top:28px}
+.acts .btn{flex:1 1 260px;max-width:420px}
+
+@media (min-width:860px){
+  #s-start{grid-template-columns:5fr 7fr;gap:64px;align-items:center}
+  .orb{width:min(30vh,240px)}
+  .opts{grid-template-columns:1fr 1fr}
+  #s-quiz .q{display:grid;grid-template-columns:5fr 7fr;gap:16px 64px;align-items:end}
+  #topic{grid-column:1/-1}
+  #qtext{margin-top:0;align-self:start}
+  .opts{margin-top:0}
+  #s-result{grid-template-columns:5fr 7fr;gap:48px 64px}
+  .reco{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+@media print{
+  body{background:#fff!important;color:#000!important}
+  .top .back,.acts,.orb{display:none!important}
+  #pct{color:#000}
+  .res-item{background:#eee;color:#000;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .res-item.ok,.res-item.mid,.res-item.low{color:#fff}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="mark" href="../index.html"><i></i>Profe Carlo</a>
+  <a class="back" href="../index.html">Volver a la web</a>
+</header>
+
+<main>
+<section id="s-start" class="rise">
+  <div class="intro">
+    <h1>¿En qué tema te trabas?</h1>
+    <p class="lead">Un test gratis de 12 preguntas, unos 15 minutos. Al final ves tu mapa de temas: cuáles dominas y cuáles conviene reforzar.</p>
+    <svg class="orb" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="84" fill="none" stroke="#0a0a0a" stroke-width="3"/><g class="o1"><polygon points="100,16 172.7,142 27.3,142" fill="none" stroke="#2436ff" stroke-width="5" stroke-linejoin="round"/></g><g class="o2"><rect x="40.6" y="40.6" width="118.8" height="118.8" fill="none" stroke="#0a0a0a" stroke-width="3"/></g><circle cx="100" cy="100" r="7" fill="#2436ff"/></svg>
+  </div>
+  <form onsubmit="return false" novalidate>
+    <div><label for="name">Nombre del alumno</label><input id="name" autocomplete="given-name" placeholder="Ej.: Valeria"></div>
+    <div><span class="lab" id="glab">Grado de secundaria</span>
+      <div class="grades" role="group" aria-labelledby="glab">
+        <button class="grade" type="button" data-g="1" aria-pressed="false">1.º</button><button class="grade" type="button" data-g="2" aria-pressed="false">2.º</button><button class="grade" type="button" data-g="3" aria-pressed="false">3.º</button><button class="grade" type="button" data-g="4" aria-pressed="false">4.º</button><button class="grade" type="button" data-g="5" aria-pressed="false">5.º</button>
+      </div></div>
+    <div><label for="dist">¿Dónde vives?</label>
+      <select id="dist"><option value="">Elige una zona</option><option>Villa Club (Carabayllo)</option><option>Carabayllo (otra zona)</option><option>Comas</option><option>Los Olivos</option><option>Otro (clases virtuales)</option></select></div>
+    <div><label for="phone">WhatsApp del papá o la mamá (opcional)</label><input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="9XX XXX XXX"></div>
+    <p id="err" role="alert"></p>
+    <button class="btn" type="button" id="go">Empezar el test</button>
+    <p class="small">Tu resultado le llega a Carlo para preparar tu plan. No se comparte con nadie más.</p>
+    <p class="small">El test es para toda la secundaria, de 1.º a 5.º. Si estás en la universidad, escríbeme por WhatsApp y vemos tus temas.</p>
+  </form>
+</section>
+
+<section id="s-quiz" class="hidden">
+  <div class="prog"><div class="dots" id="dots" aria-hidden="true"></div><span id="count"></span></div>
+  <div class="q" id="q" aria-live="polite">
+    <p id="topic"></p>
+    <h2 id="qtext" tabindex="-1"></h2>
+    <div class="opts" id="opts"></div>
+  </div>
+  <div class="nav">
+    <button class="txtbtn" type="button" id="nose">No sé esta</button>
+    <button class="btn" type="button" id="next" disabled>Siguiente</button>
+  </div>
+</section>
+
+<section id="s-result" class="hidden">
+  <div>
+    <h1 id="rtitle"></h1>
+    <p id="pct"></p>
+    <p class="lead" id="rsum"></p>
+  </div>
+  <div class="res" id="res"></div>
+  <div class="rev hidden" id="rev">
+    <h2>En qué te equivocaste y por qué</h2>
+    <ol id="revlist"></ol>
+  </div>
+  <div class="reco">
+    <h2 id="recoT"></h2>
+    <p class="lead" id="recoP"></p>
+    <div class="acts">
+      <a class="btn" id="send" target="_blank" rel="noopener">Enviar resultado por WhatsApp</a>
+      <button class="txtbtn" type="button" onclick="print()">Guardar como PDF</button>
+      <a class="txtbtn" href="../index.html#precios" style="display:inline-flex;align-items:center">Ver precios</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+const BANK={
+ 1:[
+  ["Enteros","{−8 + 5 − (−3)} =",["−6","0","−16","6"],1,"Restar −3 es lo mismo que sumar 3: −8 + 5 + 3 = 0."],
+  ["Enteros","{(−4) × (−6) ÷ 3} =",["−8","8","−72","24"],1,"Menos por menos da más: (−4) × (−6) = 24. Luego 24 ÷ 3 = 8."],
+  ["Divisibilidad","Máximo común divisor (MCD) de 24 y 36:",["6","12","72","4"],1,"24 = 12 × 2 y 36 = 12 × 3. El divisor más grande que comparten es 12. (72 es el MCM.)"],
+  ["Divisibilidad","Mínimo común múltiplo (MCM) de 6 y 8:",["2","48","24","14"],2,"Múltiplos de 8: 8, 16, 24. El primero que también es múltiplo de 6 es 24."],
+  ["Fracciones","{1/2 + 1/3} =",["2/5","5/6","1/6","2/6"],1,"Se lleva a denominador 6: 3/6 + 2/6 = 5/6. Los denominadores no se suman."],
+  ["Fracciones","¿Cuánto es 3/5 de 40?",["8","24","15","120"],1,"40 ÷ 5 = 8 y 8 × 3 = 24."],
+  ["Ecuaciones","Resuelve: {x + 9 = 15}",["{x = 6}","{x = 24}","{x = −6}","{x = 9}"],0,"El 9 está sumando y pasa restando: x = 15 − 9 = 6."],
+  ["Ecuaciones","Resuelve: {4x = 28}",["{x = 24}","{x = 32}","{x = 7}","{x = 112}"],2,"El 4 está multiplicando y pasa dividiendo: x = 28 ÷ 4 = 7."],
+  ["Geometría","Dos ángulos son suplementarios y uno mide 65°. ¿Cuánto mide el otro?",["25°","115°","295°","65°"],1,"Suplementarios suman 180°: 180° − 65° = 115°. (25° sería si sumaran 90°.)"],
+  ["Geometría","Perímetro de un rectángulo de 7 cm por 4 cm:",["11 cm","28 cm","22 cm","14 cm"],2,"Se suman los cuatro lados: 2 × (7 + 4) = 22 cm. 28 es el área, no el perímetro."],
+  ["Estadística","Promedio de 10, 14 y 18:",["14","42","13","16"],0,"(10 + 14 + 18) ÷ 3 = 42 ÷ 3 = 14."],
+  ["Estadística","Mediana de 2, 9, 4, 7, 5:",["4","5","5,4","7"],1,"Primero se ordenan: 2, 4, 5, 7, 9. El dato del medio es 5."]],
+ 2:[
+  ["Fracciones","{3/4 + 1/6} =",["4/10","11/12","4/24","5/6"],1,"Denominador común 12: 9/12 + 2/12 = 11/12."],
+  ["Fracciones","¿Cuánto es 2/3 de 45?",["15","30","35","40"],1,"45 ÷ 3 = 15 y 15 × 2 = 30."],
+  ["Porcentajes","¿Cuánto es el 20 % de 150?",["20","25","30","35"],2,"El 20 % es la quinta parte: 150 ÷ 5 = 30."],
+  ["Porcentajes","Un polo cuesta S/40 y tiene 15 % de descuento. ¿Cuánto pagas?",["S/25","S/34","S/36","S/38"],1,"El descuento es el 15 % de 40, o sea 6. Pagas 40 − 6 = 34."],
+  ["Ecuaciones","Resuelve: {3x + 7 = 22}",["{x = 3}","{x = 5}","{x = 7}","{x = 15}"],1,"3x = 22 − 7 = 15, entonces x = 15 ÷ 3 = 5."],
+  ["Ecuaciones","Resuelve: {2(x − 4) = 10}",["{x = 1}","{x = 3}","{x = 7}","{x = 9}"],3,"x − 4 = 10 ÷ 2 = 5, entonces x = 5 + 4 = 9."],
+  ["Proporcionalidad","4 cuadernos cuestan S/18. ¿Cuánto cuestan 10?",["S/40","S/45","S/48","S/50"],1,"Cada cuaderno cuesta 18 ÷ 4 = 4,50. Diez cuestan 45."],
+  ["Proporcionalidad","6 obreros pintan una casa en 10 días. ¿En cuántos días la pintan 12 obreros?",["5","8","12","20"],0,"Es proporción inversa: con el doble de obreros se tarda la mitad, 5 días."],
+  ["Geometría","Un triángulo tiene ángulos de 50° y 70°. ¿Cuánto mide el tercero?",["40°","50°","60°","80°"],2,"Los tres ángulos suman 180°: 180° − 50° − 70° = 60°."],
+  ["Geometría","Área de un triángulo de base 8 cm y altura 5 cm:",["13 cm²","20 cm²","40 cm²","80 cm²"],1,"Base por altura entre 2: 8 × 5 ÷ 2 = 20 cm². 40 sale si olvidas dividir entre 2."],
+  ["Estadística","Promedio (media) de 12, 15 y 18:",["14","15","16","45"],1,"(12 + 15 + 18) ÷ 3 = 45 ÷ 3 = 15."],
+  ["Estadística","Moda de 3, 5, 5, 7, 8:",["3","5","5,6","7"],1,"La moda es el dato que más se repite: el 5 aparece dos veces."]],
+ 3:[
+  ["Potencias","{2³ · 2⁴} =",["2⁷","2¹²","4⁷","16"],0,"Con la misma base se suman los exponentes: 3 + 4 = 7."],
+  ["Potencias","¿Cuál es 0,00045 escrito correctamente en notación científica?",["45 × 10⁻⁵","4,5 × 10⁻⁴","4,5 × 10⁴","0,45 × 10⁻³"],1,"45 × 10⁻⁵ vale lo mismo, pero no es notación científica: el número de adelante debe tener una sola cifra antes de la coma (entre 1 y 10). Por eso la coma se mueve 4 lugares hasta quedar 4,5 y el exponente es −4."],
+  ["Polinomios","{(x + 3)²} =",["{x² + 9}","{x² + 3x + 9}","{x² + 6x + 9}","{2x + 6}"],2,"Binomio al cuadrado: x² + 2·3·x + 3² = x² + 6x + 9. No olvides el término del medio."],
+  ["Polinomios","Factoriza: {x² − 9}",["{(x − 3)²}","{(x + 3)(x − 3)}","{(x − 9)(x + 1)}","{x(x − 9)}"],1,"Es una diferencia de cuadrados: a² − b² = (a + b)(a − b)."],
+  ["Sistemas","Si {x + y = 10} y {x − y = 4}, ¿cuánto vale {x}?",["3","6","7","14"],2,"Sumando las dos ecuaciones se va la y: 2x = 14, entonces x = 7."],
+  ["Sistemas","Si {2x + y = 11} y {x = 3}, ¿cuánto vale {y}?",["3","5","8","17"],1,"Reemplazas x por 3: 2 · 3 + y = 11, o sea 6 + y = 11. Entonces y = 5."],
+  ["Pitágoras","Los catetos miden 6 y 8. ¿Cuánto mide la hipotenusa?",["10","12","14","48"],0,"6² + 8² = 36 + 64 = 100, y la raíz de 100 es 10."],
+  ["Pitágoras","Una escalera de 13 m tiene su base a 5 m de la pared. ¿A qué altura llega?",["8 m","10 m","12 m","18 m"],2,"13² − 5² = 169 − 25 = 144, y la raíz de 144 es 12. No se restan 13 y 5 directamente."],
+  ["Funciones","Si {f(x) = 2x − 1}, ¿cuánto es {f(4)}?",["5","7","8","9"],1,"Reemplazas x por 4: 2 · 4 − 1 = 7."],
+  ["Funciones","Pendiente de la recta que pasa por (0, 1) y (2, 5):",["1","2","3","4"],1,"Sube 5 − 1 = 4 y avanza 2 − 0 = 2. Pendiente: 4 ÷ 2 = 2."],
+  ["Probabilidad","Al lanzar un dado, ¿probabilidad de sacar un número par?",["1/6","1/3","1/2","2/3"],2,"Hay 3 pares (2, 4 y 6) entre 6 resultados: 3/6 = 1/2."],
+  ["Probabilidad","Una bolsa tiene 3 bolas rojas y 5 azules. ¿Probabilidad de sacar una roja?",["3/5","3/8","5/8","1/3"],1,"Hay 3 rojas entre 8 bolas en total: 3/8. El total es 8, no 5."]],
+ 4:[
+  ["Cuadráticas","Soluciones de {x² − 5x + 6 = 0}:",["2 y 3","−2 y −3","1 y 6","−1 y 6"],0,"Se factoriza como (x − 2)(x − 3) = 0: dos números que multiplicados dan 6 y sumados dan 5."],
+  ["Cuadráticas","Soluciones de {x² = 49}:",["solo 7","7 y −7","24,5","solo −7"],1,"Tanto 7² como (−7)² dan 49, así que hay dos soluciones."],
+  ["Inecuaciones","Resuelve: {2x − 3 > 7}",["{x > 2}","{x > 5}","{x < 5}","{x > 10}"],1,"2x > 7 + 3 = 10, entonces x > 5."],
+  ["Inecuaciones","Resuelve: {−3x ≤ 12}",["{x ≤ −4}","{x ≥ −4}","{x ≤ 4}","{x ≥ 4}"],1,"Al dividir entre un número negativo el signo se voltea: x ≥ −4."],
+  ["Trigonometría","En un triángulo rectángulo, el cateto opuesto al ángulo α mide 3 y la hipotenusa 5. ¿Cuánto es {sen α}?",["3/5","4/5","3/4","5/3"],0,"Seno es cateto opuesto entre hipotenusa: 3/5."],
+  ["Trigonometría","¿Cuánto es {tan 45°}?",["0","1/2","1","√2"],2,"En el triángulo de 45° los dos catetos son iguales, y tangente es opuesto entre adyacente: 1."],
+  ["Geometría","Área de un círculo de radio 3 cm:",["6π cm²","9π cm²","3π cm²","36π cm²"],1,"Área = π · r² = π · 3² = 9π. 6π es la longitud de la circunferencia."],
+  ["Geometría","Dos triángulos son semejantes con razón 2. Si un lado del pequeño mide 5 cm, ¿cuánto mide su lado correspondiente en el grande?",["7 cm","10 cm","25 cm","2,5 cm"],1,"Razón 2 quiere decir que cada lado se multiplica por 2: 5 × 2 = 10 cm."],
+  ["Funciones","Vértice de la parábola {y = (x − 2)² + 1}:",["(2, 1)","(−2, 1)","(1, 2)","(2, −1)"],0,"En y = (x − h)² + k el vértice es (h, k). Aquí h = 2 y k = 1."],
+  ["Funciones","Si {f(x) = x² − 3}, ¿cuánto es {f(−2)}?",["−7","1","7","−1"],1,"(−2)² = 4 y 4 − 3 = 1. El cuadrado de un negativo es positivo."],
+  ["Conteo","¿De cuántas formas se pueden ordenar 3 libros distintos en un estante?",["3","6","9","27"],1,"Hay 3 opciones para el primero, 2 para el segundo y 1 para el último: 3 × 2 × 1 = 6."],
+  ["Conteo","Tienes 4 polos y 3 pantalones. ¿De cuántas formas distintas puedes vestirte?",["7","12","64","81"],1,"Cada polo combina con cada pantalón: 4 × 3 = 12. No se suman."]],
+ 5:[
+  ["Logaritmos","¿Cuánto es {log₂ 8}?",["2","3","4","16"],1,"Es el exponente al que elevas 2 para obtener 8: 2³ = 8."],
+  ["Logaritmos","{log 100 + log 10} =",["2","3","110","1000"],1,"log 100 = 2 y log 10 = 1; sumados dan 3."],
+  ["Progresiones","En la progresión aritmética 5, 8, 11, … ¿cuál es el término de lugar 10?",["29","32","35","50"],1,"Del primero al décimo hay 9 saltos de 3: 5 + 9 · 3 = 32."],
+  ["Progresiones","En la progresión geométrica 2, 6, 18, … ¿cuál es el quinto término?",["54","162","486","30"],1,"Cada término se multiplica por 3: 2, 6, 18, 54, 162."],
+  ["Trigonometría","Si {sen x = 3/5} y el ángulo {x} es agudo, ¿cuánto es {cos x}?",["2/5","4/5","3/4","5/4"],1,"sen² x + cos² x = 1. Entonces cos² x = 1 − 9/25 = 16/25 y cos x = 4/5."],
+  ["Trigonometría","¿Cuántos radianes son 180°?",["π/2","π","2π","180π"],1,"Una vuelta completa (360°) son 2π radianes; media vuelta es π."],
+  ["Geometría analítica","Distancia entre los puntos (1, 2) y (4, 6):",["5","7","25","√7"],0,"Las diferencias son 3 y 4. Distancia: √(3² + 4²) = √25 = 5."],
+  ["Geometría analítica","Pendiente de la recta {y = −2x + 5}:",["5","2","−2","−5"],2,"En y = mx + b la pendiente es m, el número que acompaña a x: −2."],
+  ["Sólidos","Volumen de un cubo de arista 3 cm:",["9 cm³","27 cm³","18 cm³","54 cm³"],1,"Arista al cubo: 3 × 3 × 3 = 27 cm³."],
+  ["Sólidos","Volumen de un cilindro de radio 2 cm y altura 5 cm:",["10π cm³","20π cm³","40π cm³","100π cm³"],1,"Área de la base por la altura: π · 2² · 5 = 20π cm³."],
+  ["Funciones","Si {f(x) = 2^x}, ¿cuánto es {f(5)}?",["10","25","32","64"],2,"2⁵ = 2 · 2 · 2 · 2 · 2 = 32. No es 2 × 5."],
+  ["Funciones","¿Para qué valor de {x} no existe {f(x) = 1/(x − 3)}?",["{x = 0}","{x = 3}","{x = −3}","{x = 1}"],1,"No se puede dividir entre cero, y el denominador x − 3 vale cero cuando x = 3."]]
+};
+/* {expresión} → recuadro; las letras sueltas quedan en cursiva azul para no confundirlas con el texto */
+const esc=t=>t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmt=t=>esc(t).replace(/\{([^}]+)\}/g,(m,e)=>'<span class="fx">'+e.replace(/\^(\w+)/g,'<sup>$1</sup>').replace(/(?<![a-záéíóúñ<\/])([a-zα])(?![a-záéíóúñ>])/g,'<var>$1</var>')+'</span>').replace(/(<span class="fx">.*?<\/span>)([,.;:?])/g,'<span class="nb">$1$2</span>');
+const plain=t=>t.replace(/[{}]/g,'').replace(/\^/g,'^');
+const WA="51991053535",FIELDS=["red","yellow","teal","white","dark","blue"];
+const $=id=>document.getElementById(id);
+/* URL de la aplicación web de Apps Script (termina en /exec). Vacía = no guarda nada. */
+const SHEET_URL='https://script.google.com/macros/s/AKfycby7EJZf1FM1R19awFLmPSQlyTDw-e6K8tnhnBq0-quoJCk3KiYK8MYcvhGKxmMkFnJevw/exec';
+let grade=null,i=0,sel=null,answers=[];
+
+document.querySelectorAll('.grade').forEach(b=>b.onclick=()=>{grade=+b.dataset.g;
+  document.querySelectorAll('.grade').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+
+$('go').onclick=()=>{
+  const name=$('name').value.trim(), ph=$('phone').value.replace(/\D/g,'');
+  if(!name) return $('err').textContent='Escribe el nombre del alumno.';
+  if(!grade) return $('err').textContent='Elige el grado.';
+  if(!$('dist').value) return $('err').textContent='Elige dónde vives.';
+  if(ph && !/^9\d{8}$/.test(ph)) return $('err').textContent='El WhatsApp debe tener 9 dígitos y empezar con 9.';
+  $('err').textContent='';$('s-start').classList.add('hidden');$('s-quiz').classList.remove('hidden');
+  $('dots').innerHTML=BANK[grade].map(()=>'<i></i>').join('');render();
+};
+
+function render(){
+  const Q=BANK[grade],[t,q,o]=Q[i];sel=null;$('next').disabled=true;
+  document.body.dataset.f=FIELDS[Math.floor(i/2)%FIELDS.length];
+  $('count').textContent=`${i+1} de ${Q.length}`;
+  [...$('dots').children].forEach((d,k)=>{d.className=k<i?'done':k===i?'now':''});
+  $('topic').textContent=t;$('topic').style.setProperty('--len',t.length);$('qtext').innerHTML=fmt(q);
+  $('opts').innerHTML=o.map((x,k)=>`<button class="opt" type="button" aria-pressed="false" data-k="${k}"><b>${'ABCD'[k]}</b><span>${fmt(x)}</span></button>`).join('');
+  $('opts').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{sel=+b.dataset.k;
+    $('opts').querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed',x===b));$('next').disabled=false});
+  $('next').textContent=i===Q.length-1?'Ver resultado':'Siguiente';
+  const qb=$('q');qb.classList.remove('swap');void qb.offsetWidth;qb.classList.add('swap');
+  scrollTo(0,0);
+}
+function advance(v){answers[i]=v;i++;if(i<BANK[grade].length)render();else result();}
+$('next').onclick=()=>advance(sel);
+$('nose').onclick=()=>advance(null);
+
+function guardar(d){if(!SHEET_URL||guardar.done)return;guardar.done=true;
+  try{fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d),keepalive:true}).catch(()=>{})}catch(e){}}
+function result(){
+  const Q=BANK[grade],by={};
+  Q.forEach(([t,,,c],k)=>{by[t]??={ok:0,n:0};by[t].n++;if(answers[k]===c)by[t].ok++});
+  const total=Q.filter(([, , ,c],k)=>answers[k]===c).length,pct=Math.round(total/Q.length*100);
+  const name=$('name').value.trim();
+  document.body.dataset.f='dark';
+  $('s-quiz').classList.add('hidden');$('s-result').classList.remove('hidden');
+  $('rtitle').textContent=`${name}, este es tu mapa`;
+  $('rsum').textContent=`Respondiste bien ${total} de ${Q.length} preguntas de ${grade}.º de secundaria.`;
+  const still=matchMedia('(prefers-reduced-motion:reduce)').matches,t0=performance.now();
+  (function f(t){const p=still?1:Math.min(1,(t-t0)/1400),k=1-Math.pow(1-p,4);$('pct').textContent=Math.round(pct*k)+' %';if(p<1)requestAnimationFrame(f)})(t0);
+  const weak=[];
+  $('res').innerHTML=Object.entries(by).map(([t,{ok,n}],k)=>{
+    const r=ok/n,[cls,lab]=r===1?['ok','Lo domina']:r>0?['mid','Reforzar']:['low','Prioridad'];
+    if(r<1)weak.push(t);
+    return `<div class="res-item ${cls}" style="--i:${k};--w:${r===1?1:r>0?.62:.3}"><i></i><strong>${t}</strong><span>${lab}</span></div>`}).join('');
+  const bad=Q.map((r,k)=>[r,k]).filter(([r,k])=>answers[k]!==r[3]);
+  $('rev').classList.toggle('hidden',!bad.length);
+  $('revlist').innerHTML=bad.map(([[t,q,o,c,w],k],j)=>`<li class="rv-item" style="--i:${j}"><p class="small">Pregunta ${k+1} · ${t}</p><p class="rq">${fmt(q)}</p>
+    <dl><div class="mine${answers[k]==null?' none':''}"><dt>${answers[k]==null?'No respondiste':'Marcaste'}</dt><dd>${answers[k]==null?'Sin respuesta':fmt(o[answers[k]])}</dd></div><div class="good"><dt>Correcta</dt><dd>${fmt(o[c])}</dd></div></dl>
+    <p class="why"><b>Por qué:</b> ${fmt(w)}</p></li>`).join('');
+  if(weak.length===0){$('recoT').textContent='Muy bien, dominas el test';$('recoP').textContent='Una clase suelta antes de cada examen puede bastar.'}
+  else if(weak.length<=2){$('recoT').textContent='Te conviene el Pack examen';$('recoP').textContent=`Con 3 clases en ${weak.join(' y ')} deberías ponerte al día. Cuesta S/55.`}
+  else{$('recoT').textContent='Te conviene el Paquete Refuerzo';$('recoP').textContent=`Hay ${weak.length} temas por reforzar (${weak.join(', ')}). Con 8 clases en el mes los trabajamos uno por uno. Cuesta S/150.`}
+  const msg=`Hola, hice el test de Profe Carlo.\nAlumno: ${name}\nGrado: ${grade}.º sec.\nZona: ${$('dist').value}\nResultado: ${total}/${Q.length} (${pct}%)\nTemas a reforzar: ${weak.join(', ')||'ninguno'}`;
+  $('send').href=`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+  const reco=weak.length===0?'Clase suelta':weak.length<=2?'Pack examen':'Paquete Refuerzo';
+  guardar({alumno:name,grado:grade+'.º',zona:$('dist').value,whatsapp:$('phone').value.replace(/\D/g,''),
+    correctas:total+'/'+Q.length,nota:pct,reforzar:weak.join(', '),domina:Object.keys(by).filter(t=>!weak.includes(t)).join(', '),
+    recomendacion:reco,falladas:bad.map(([,k])=>k+1).join(', ')});
+  scrollTo(0,0);
+}
+</script>
+</body>
+</html>
